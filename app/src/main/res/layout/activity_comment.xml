@@ -1,0 +1,40 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/CommentLayout1"
+        android:background="#39D1Df">
+        <ImageView
+            android:id="@+id/CommentBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:paddingLeft="10dp"
+            android:src="@drawable/detail_ic_back"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/CommentName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="3dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="13dp"
+        android:maxLines="1"
+        android:text="全部评价："
+        android:textColor="#000000"
+        android:textSize="22sp"
+        android:background="#39D1Df"
+        android:layout_below="@id/CommentLayout1"
+        android:padding="10dp"/>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/CommentName"
+        android:layout_alignParentEnd="true" />
+
+</RelativeLayout>
