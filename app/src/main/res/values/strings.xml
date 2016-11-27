@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Project</string>
+    <string name="menu_main_title_by_place">地点</string>
+    <string name="menu_main_title_price">价格</string>
+    <string name="menu_main_evaluate">评分</string>
+    <string name="menu_main_sort_more">更多</string>
 </resources>

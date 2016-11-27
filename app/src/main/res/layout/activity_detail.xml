@@ -126,21 +126,12 @@
                 android:id="@+id/shop_details_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background=""
                 android:padding="7dp">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/detail_ic_introduction"
                     android:id="@+id/DetailIcIntroduction"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/DetailTextView2"
-                    android:layout_below="@id/DetailTextView2"
-                    android:text="暂无详细信息"/>
-
                 <TextView
                     android:id="@+id/DetailTextView2"
                     android:layout_width="wrap_content"
@@ -151,6 +142,14 @@
                     android:textSize="16sp"
                     android:layout_alignParentTop="true"
                     android:layout_toEndOf="@id/DetailIcIntroduction" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/DetailTextView2"
+                    android:layout_below="@id/DetailTextView2"
+                    android:text="暂无详细信息"/>
+
+
 
             </RelativeLayout>
             <RelativeLayout

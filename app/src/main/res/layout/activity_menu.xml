@@ -81,22 +81,6 @@
         android:id="@+id/menu_between_sort_and_list"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="10dp"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/menu_between_sort_and_list"
-        android:layout_above="@id/menu_main_change_state">
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/menu_between_sort_and_list"
-            android:id="@+id/menu_main_listview"
-            >
-        </ListView>
-    </LinearLayout>
-
-
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -129,4 +113,21 @@
             android:layout_centerHorizontal="true"
             android:id="@+id/button" />
     </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/menu_between_sort_and_list"
+        android:layout_above="@id/menu_main_change_state">
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/menu_between_sort_and_list"
+            android:id="@+id/menu_main_listview"
+            >
+        </ListView>
+    </LinearLayout>
+
+
+
+
 </RelativeLayout>
