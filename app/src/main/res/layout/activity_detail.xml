@@ -78,7 +78,7 @@
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:paddingTop="9dp"
-                        android:src="@drawable/detail_ic_photo"
+                        android:src="@mipmap/detail_ic_photo"
                         android:contentDescription=""/>
 
                     <RelativeLayout
@@ -223,5 +223,18 @@
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="right"
+        android:background="@color/appColor">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="立即参加"
+            android:id="@+id/DetailJoinProgram"/>
+    </LinearLayout>
 
 </RelativeLayout>
