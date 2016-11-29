@@ -4,4 +4,6 @@
     <string name="menu_main_title_price">价格</string>
     <string name="menu_main_evaluate">评分</string>
     <string name="menu_main_sort_more">更多</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_logon">LogonActivity</string>
 </resources>
