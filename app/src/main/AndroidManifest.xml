@@ -11,10 +11,12 @@
         <activity android:name=".DetailActivity" />
         <activity android:name=".CommentActivity" />
         <activity android:name=".MenuActivity" />
-        <activity
-            android:name=".LoginActivity" />
-        <activity
-            android:name=".LogonActivity"/>
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".LogonActivity" />
+        <activity android:name=".MyOrganizedActivity" />
+        <activity android:name=".MyCollectedActivity" />
+        <activity android:name=".MyParticipatedActivity" />
+        <activity android:name=".PersonActivity"></activity>
     </application>
 
 </manifest>
