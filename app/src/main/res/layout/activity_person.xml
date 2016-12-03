@@ -49,7 +49,7 @@
             android:layout_toLeftOf="@+id/personLine1"
             android:layout_marginRight="10dp"
             android:layout_marginTop="5dp"
-            android:text="可可西里"
+            android:text=""
             android:textSize="20sp"
             android:background="#eeeeee"/>
         <TextView
@@ -59,7 +59,7 @@
             android:layout_below="@+id/personNickname"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:text="我的未来不是梦"
+            android:text=""
             android:background="#eeeeee"/>
 
 
