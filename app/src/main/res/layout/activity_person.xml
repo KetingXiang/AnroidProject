@@ -23,7 +23,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:padding="5dp"
-            android:src="@mipmap/yy"/>
+            />
         <ImageView
             android:layout_width="2dp"
             android:layout_height="25dp"
@@ -40,7 +40,7 @@
             android:layout_below="@+id/personHeadImage"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="10dp"
-            android:background="@mipmap/man"/>
+            />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
