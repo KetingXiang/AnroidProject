@@ -26,12 +26,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+
+import static android.R.id.message;
 
 public class PersonActivity extends AppCompatActivity {
     // Keting Xiang------------------------start
@@ -39,6 +48,8 @@ public class PersonActivity extends AppCompatActivity {
     /*****************************主界面控件********************************/
     private ImageView       personBackground;           // 背景墙
     private ImageView       personHeadImage;            // 头像
+    private TextView        personNickname;             // 昵称
+    private ImageView       personGender;               // 性别
     private TextView        personWords;                // 个性签名
     private LinearLayout    personParticipateAll;       // 我参与的
     private LinearLayout    personOrganizeAll;          // 我发起的
@@ -60,6 +71,9 @@ public class PersonActivity extends AppCompatActivity {
     private Button          personHeadChangeFromAlbum;
     private Button          personHeadChangeGiveUp;
 
+    // 传递来的用户名主键
+    private String personId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,11 +81,7 @@ public class PersonActivity extends AppCompatActivity {
         setContentView(R.layout.activity_person);
         bindAllViews();
         listenAllViews();
-        setPersonBackground();
-        setPersonHeadImage();
-        setPersonNickName();
-        setPersonGender();
-        setPersonWords();
+        setPersonInformation();
     }
 
     @Override
@@ -83,6 +93,8 @@ public class PersonActivity extends AppCompatActivity {
     public void bindAllViews() {
         personBackground     = (ImageView)findViewById(R.id.personBackground);
         personHeadImage      = (ImageView)findViewById(R.id.personHeadImage);
+        personNickname       = (TextView)findViewById(R.id.personNickname);
+        personGender         = (ImageView)findViewById(R.id.personGender);
         personWords          = (TextView)findViewById(R.id.personWords);
         personParticipateAll = (LinearLayout)findViewById(R.id.personParticipateAll);
         personOrganizeAll    = (LinearLayout)findViewById(R.id.personOrganizeAll);
@@ -97,18 +109,14 @@ public class PersonActivity extends AppCompatActivity {
     private static final int HEAD_PHOTO_WITH_CAMERA       = 2;
     private static final int HEAD_CHOOSE_PICTURE          = 3;
 
-    // 压缩
-    public Bitmap zoomBitmap(Bitmap bitmap, int width, int height) {
-        int w = bitmap.getWidth();
-        int h = bitmap.getHeight();
-        Matrix matrix = new Matrix();
-        float scaleWidth = (float) width / w;
-        float scaleHeight = (float) height / h;
-        matrix.postScale(scaleWidth, scaleHeight);
-        Bitmap newBitmap = Bitmap.createBitmap(bitmap, 0, 0, w, h, matrix, true);
+    /*****************************从数据库中更新主界面********************************/
+    private static final int DECODE_XML                   = 5;
+    private static final int HEAD_FROM_DB                 = 0;
+    private static final int BACKGROUND_FROM_DB           = 1;
+    private static final int NICKNAME_FROM_DB             = 2;
+    private static final int GENDER_FROM_DB               = 3;
+    private static final int WORDS_FROM_DB                = 4;
 
-        return newBitmap;
-    }
 
     private Handler mHandler2 = new Handler() {
         public void handleMessage(Message message) {
@@ -387,36 +395,108 @@ public class PersonActivity extends AppCompatActivity {
             }
         });
     }
-    /***************************从数据库中设置背景图片********************************/
-    private Handler mHandler = new Handler() {
-        public void handleMessage(Message message) {
-            Bitmap bitmap = (Bitmap) message.obj;
-//            int bWidth = bitmap.getWidth();
-//            int bHeigth = bitmap.getHeight();
-
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-            int dwidth = displayMetrics.widthPixels;
-            int dheight = displayMetrics.heightPixels;
-
-            Bitmap newBitmap = Bitmap.createScaledBitmap(bitmap, dwidth, dheight, true);
 
 
-            personBackground.setImageBitmap(newBitmap);
-        }
-    };
+    /***********************************从数据库中更新UI*************************************/
+    public void setPersonInformation() {
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        personId = bundle.getString("id");
+        String requestUrl = "http://172.18.57.116:8000/findusers/" + personId;
+        getAllInformation(requestUrl);
+    }
 
-    public void sendBitmap(final String url) {
+    public void getAllInformation(final String url) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Bitmap bitmap = getBitmap(url);
-                Message message = new Message();
-                message.obj = bitmap;
-                mHandler.sendMessage(message);
+                HttpURLConnection connection = null;
+                try {
+                    URL myurl = new URL(url.toString());
+                    connection = (HttpURLConnection) myurl.openConnection();
+                    connection.setRequestMethod("GET");
+                    connection.setReadTimeout(8000);
+                    connection.setConnectTimeout(8000);
+                    InputStream inputStream = connection.getInputStream();
+                    BufferedReader bufferedReader = new BufferedReader(
+                            new InputStreamReader(inputStream));
+                    StringBuilder response = new StringBuilder();
+                    String line;
+                    while ((line = bufferedReader.readLine()) != null) {
+                        response.append(line);
+                    }
+                    XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+                    XmlPullParser parser = factory.newPullParser();
+                    parser.setInput(new StringReader(response.toString()));
+                    int type = parser.getEventType();
+                    ArrayList<String> list = new ArrayList<String>();
+                    while (type != XmlPullParser.END_DOCUMENT) {
+                        switch (type) {
+                            case XmlPullParser.START_TAG:
+                                if ("string".equals(parser.getName())) {
+                                    String str = parser.nextText();
+                                    list.add(str);
+                                }
+                                break;
+                            case XmlPullParser.END_TAG:
+                                break;
+                            default:
+                                break;
+                        }
+                        type = parser.next();
+                    }
+                    Message message = new Message();
+                    message.what = DECODE_XML;
+                    message.obj = list;
+                    mHandlerDb.sendMessage(message);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    if (connection != null) {
+                        connection.disconnect();
+                    }
+                }
             }
         }).start();
     }
+
+    private Handler mHandlerDb = new Handler() {
+        public void handleMessage(Message message) {
+            switch (message.what) {
+                case DECODE_XML:
+                    ArrayList<String> list = (ArrayList<String>)message.obj;
+
+                    // 设置昵称
+                    personNickname.setText(personId);
+
+                    // 设置性别
+                    if (list.get(2).equals("男")) {
+                        Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.mipmap.man);
+                        personGender.setImageBitmap(bitmap);
+                    }
+                    else {
+                        Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.mipmap.woman);
+                        personGender.setImageBitmap(bitmap);
+                    }
+
+                    // 设置个性签名
+                    personWords.setText(list.get(5));
+
+                    // 设置头像
+                    String headUrl = list.get(3);
+                    Bitmap headBitmap = getBitmap(headUrl);
+                    personHeadImage.setImageBitmap(headBitmap);
+
+                    // 设置背景
+                    String backUrl = list.get(4);
+                    Bitmap backBitmap = getBitmap(backUrl);
+                    personBackground.setImageBitmap(backBitmap);
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
     public Bitmap getBitmap(String url) {
         Bitmap bitmap = null;
@@ -445,7 +525,73 @@ public class PersonActivity extends AppCompatActivity {
         return bitmap;
     }
 
-//                InputStream is = connection.getInputStream();
+    // 12.12之前的版本
+//    /***************************从数据库中设置背景图片********************************/
+//    private Handler mHandler = new Handler() {
+//        public void handleMessage(Message message) {
+//            Bitmap bitmap = (Bitmap) message.obj;
+////            int bWidth = bitmap.getWidth();
+////            int bHeigth = bitmap.getHeight();
+//
+//            DisplayMetrics displayMetrics = new DisplayMetrics();
+//            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+//            int dwidth = displayMetrics.widthPixels;
+//            int dheight = displayMetrics.heightPixels;
+//
+//            Bitmap newBitmap = Bitmap.createScaledBitmap(bitmap, dwidth, dheight, true);
+//
+//
+//            personBackground.setImageBitmap(newBitmap);
+//        }
+//    };
+//
+//    public void sendBitmap(final String url) {
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                Bitmap bitmap = getBitmap(url);
+//                Message message = new Message();
+//                message.obj = bitmap;
+//                mHandler.sendMessage(message);
+//            }
+//        }).start();
+//    }
+//
+//
+//
+//
+//
+//    public void setPersonBackground() {
+//
+//
+//        String url = "http://p1.bpimg.com/567571/5e5889214a4712a1.jpg";
+//        sendBitmap(url);
+//
+//    }
+//
+//
+//    /*****************************从数据库中设置头像********************************/
+//    public void setPersonHeadImage() {
+//
+//    }
+//
+//    /*****************************从数据库中设置昵称********************************/
+//    public void setPersonNickName() {
+//
+//    }
+//
+//    /***************************从数据库中设置性别图片********************************/
+//    public void setPersonGender() {
+//
+//    }
+//
+//    /***************************从数据库中设置个性签名********************************/
+//    public void setPersonWords() {
+//
+//    }
+
+
+    //                InputStream is = connection.getInputStream();
 //                if (is == null){
 //                    throw new RuntimeException("stream is null");
 //                }else{
@@ -473,36 +619,6 @@ public class PersonActivity extends AppCompatActivity {
 //        inStream.close();
 //        return outStream.toByteArray();
 //    }
-
-
-    public void setPersonBackground() {
-
-
-        String url = "http://p1.bpimg.com/567571/5e5889214a4712a1.jpg";
-        sendBitmap(url);
-
-    }
-
-
-    /*****************************从数据库中设置头像********************************/
-    public void setPersonHeadImage() {
-
-    }
-
-    /*****************************从数据库中设置昵称********************************/
-    public void setPersonNickName() {
-
-    }
-
-    /***************************从数据库中设置性别图片********************************/
-    public void setPersonGender() {
-
-    }
-
-    /***************************从数据库中设置个性签名********************************/
-    public void setPersonWords() {
-
-    }
 
     // Keting Xiang------------------------end
 }
