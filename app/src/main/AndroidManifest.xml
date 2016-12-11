@@ -16,7 +16,7 @@
         <activity android:name=".MyOrganizedActivity" />
         <activity android:name=".MyCollectedActivity" />
         <activity android:name=".MyParticipatedActivity" />
-        <activity android:name=".PersonActivity"></activity>
+        <activity android:name=".PersonActivity"/>
     </application>
 
 </manifest>
