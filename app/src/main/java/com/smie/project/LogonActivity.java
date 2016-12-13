@@ -100,6 +100,13 @@ public class LogonActivity extends AppCompatActivity {
                     if(response.get(0).equals("123"))//de dao mima
                     {
 
+                        //strange zengjunlin
+                        //跳转到主界面
+                        Intent intent = new Intent(LogonActivity.this,MenuActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("id",LogonUsername.getText().toString());
+                        intent.putExtras(bundle);
+                        startActivity(intent);
                     }
 
                     break;
