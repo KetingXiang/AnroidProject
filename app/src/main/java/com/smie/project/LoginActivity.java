@@ -1,13 +1,15 @@
 package com.smie.project;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Toast;
-
-import java.util.Objects;
 
 /**
  * Created by LeviLee on 16-11-25.
@@ -18,46 +20,123 @@ public class LoginActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        final Button Login = (Button) findViewById(R.id.LoginLoginButton);
-        final TextInputLayout Newpassword = (TextInputLayout) findViewById(R.id.NewPasswordLayout);
-        final String LoginNewPassword = Newpassword.getEditText().getText().toString();
-        //final String LoginNewPassword = ((EditText)findViewById(R.id.LoginNewPassword)).getText().toString();
-        //Newpassword.setErrorEnabled(true);
-        //Newpassword.setError(emptyUsername);
-        final TextInputLayout ConfirmPassword = (TextInputLayout) findViewById(R.id.ConfirmPasswordLayout);
-        final String LoginConfirmPassword = ConfirmPassword.getEditText().getText().toString();
-        //final String LoginConfirmPassword = ((EditText)findViewById(R.id.LoginConfirmPassword)).getText().toString();
-        //ConfirmPassword.setErrorEnabled(true);
-        //ConfirmPassword.setError(emptyUsername);
-//
-//        @Override
-//        public void onTextChanged(CharSequence s, int start, int before, int count) {
-//            //这儿判断操作，如果输入错误可以给用户提示
-//            if (s.length() < 5) {
-//                Newpassword.setErrorEnabled(true);
-//                Newpassword.setError("用户名不能小于6位");
-//            } else {
-//                Newpassword.setErrorEnabled(false);
-//            }
-//        }
+        final Button LoginLoginLoginButton = (Button) findViewById(R.id.LoginLoginButton);
+        final Button Loginreturn = (Button) findViewById(R.id.Loginreturn);
+        final TextInputLayout NewPasswordLayout = (TextInputLayout) findViewById(R.id.NewPasswordLayout);
+        final EditText NewPassword = NewPasswordLayout.getEditText();
+        final TextInputLayout ConfirmPasswordLayout = (TextInputLayout) findViewById(R.id.ConfirmPasswordLayout);
+        final EditText ConfirmPassword = ConfirmPasswordLayout.getEditText();
+        final TextInputLayout NewUsernameLayout = (TextInputLayout) findViewById(R.id.NewUsernameLayout);
+        final EditText NewUsername = NewUsernameLayout.getEditText();
+        final TextInputLayout PhoneLayout = (TextInputLayout) findViewById(R.id.PhoneLayout);
+        final EditText Phone = PhoneLayout.getEditText();
+        final RadioButton MaleButton = (RadioButton) findViewById(R.id.MaleButton);
+        final RadioButton FemaleButton = (RadioButton) findViewById(R.id.FelmaleButton);
 
-        Login.setOnClickListener(new View.OnClickListener()
+        final String[] sex = new String[1];
+
+        Loginreturn.setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onClick (View view)
+            public void onClick(View view)
             {
-                if (!Objects.equals(LoginNewPassword, LoginConfirmPassword))
+                Intent intent = new Intent(LoginActivity.this,LogonActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        LoginLoginLoginButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                if(TextUtils.isEmpty(NewUsername.getText().toString()))
                 {
-                    ConfirmPassword.setErrorEnabled(true);
-                    ConfirmPassword.setError("此密码与新密码不同");
+                    NewUsernameLayout.setErrorEnabled(true);
+                    NewUsernameLayout.setError("登录名不能为空");
+                    ConfirmPasswordLayout.setErrorEnabled(false);
+                    NewPasswordLayout.setErrorEnabled(false);
+                    PhoneLayout.setErrorEnabled(false);
+
+
+                }
+                else if(NewUsername.getText().toString().length() > 10)
+                {
+                    NewUsernameLayout.setErrorEnabled(true);
+                    NewUsernameLayout.setError("登录名不能不超过10字节");
+                    NewPasswordLayout.setErrorEnabled(false);
+                    ConfirmPasswordLayout.setErrorEnabled(false);
+                    PhoneLayout.setErrorEnabled(false);
                 }
                 else
                 {
-                    ConfirmPassword.setErrorEnabled(false);
+                    NewUsernameLayout.setErrorEnabled(false);
+                    if (TextUtils.isEmpty(NewPassword.getText().toString()))
+                    {
+                        NewPasswordLayout.setErrorEnabled(true);
+                        NewPasswordLayout.setError("密码不能为空");
+                        ConfirmPasswordLayout.setErrorEnabled(false);
+                        PhoneLayout.setErrorEnabled(false);
+                    }
+                    else if(NewPassword.getText().toString().length() > 10||NewPassword.getText().toString().length() < 6)
+                    {
+                        NewPasswordLayout.setErrorEnabled(true);
+                        NewPasswordLayout.setError("密码应为6~10位");
+                        ConfirmPasswordLayout.setErrorEnabled(false);
+                        PhoneLayout.setErrorEnabled(false);
+                    }
+                    else
+                    {
+                        NewPasswordLayout.setErrorEnabled(false);
+                        if (TextUtils.isEmpty(ConfirmPassword.getText().toString()))
+                        {
+                            ConfirmPasswordLayout.setErrorEnabled(true);
+                            ConfirmPasswordLayout.setError("请确认密码");
+                            PhoneLayout.setErrorEnabled(false);
+                        }
+                        else if(ConfirmPassword.getText().toString().length() > 10||ConfirmPassword.getText().toString().length() < 6)
+                        {
+                            ConfirmPasswordLayout.setErrorEnabled(true);
+                            ConfirmPasswordLayout.setError("密码应为6~10位");
+                            PhoneLayout.setErrorEnabled(false);
+                        }
+                        else if(!(ConfirmPassword.getText().toString().equals(NewPassword.getText().toString())))
+                        {
+                            ConfirmPasswordLayout.setErrorEnabled(true);
+                            ConfirmPasswordLayout.setError("确认密码与新密码不一致");
+                            Toast.makeText(LoginActivity.this,NewPassword.getText().toString(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this,ConfirmPassword.getText().toString(),Toast.LENGTH_SHORT).show();
+                            PhoneLayout.setErrorEnabled(false);
+                        }
+                        else
+                        {
+                            ConfirmPasswordLayout.setErrorEnabled(false);
+                            if (TextUtils.isEmpty(Phone.getText().toString()))
+                            {
+                                PhoneLayout.setErrorEnabled(true);
+                                PhoneLayout.setError("手机号码不能为空");
+                            }
+                            else if(Phone.getText().toString().length() != 11)
+                            {
+                                PhoneLayout.setErrorEnabled(true);
+                                PhoneLayout.setError("请输入11位手机号码");
+                            }
+                            else
+                            {
+                                PhoneLayout.setErrorEnabled(false);
+                                if (MaleButton.isChecked())
+                                {
+                                    sex[0] = "Male";
+                                }
+                                else if (FemaleButton.isChecked())
+                                {
+                                    sex[0] = "Female";
+                                }
+                                Toast.makeText(LoginActivity.this,sex[0],Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
                 }
-                //Toast.makeText(LoginActivity.this, "注册被点击!", Toast.LENGTH_SHORT).show();
-                Toast.makeText(LoginActivity.this, LoginNewPassword, Toast.LENGTH_SHORT).show();
-                Toast.makeText(LoginActivity.this, LoginConfirmPassword, Toast.LENGTH_SHORT).show();
             }
         });
     }

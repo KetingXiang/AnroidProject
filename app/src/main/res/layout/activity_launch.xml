@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#39D1Df"
+    tools:context="com.smie.project.LaunchActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="60dp"
+        android:id="@+id/LaunchNameLayout"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="项目名称:"
+            android:textSize="20sp"
+            android:textColor="#ff000000"
+            android:id="@+id/LaunchNameText"/>
+        <EditText
+            android:layout_alignParentLeft="true"
+            android:layout_alignBottom="@id/LaunchNameText"
+            android:layout_marginLeft="90dp"
+            android:background="@drawable/seteditview"
+            android:id="@+id/LaunchName"
+            android:hint="最多能使用10字描述"
+            android:textColorHint="#7a7a7a"
+            android:textSize="17sp"
+            android:paddingLeft="7px"
+            android:paddingTop="5px"
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/LaunchNameLayout"
+        android:id="@+id/LaunchPlaceLayout"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="30dp"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="地点:"
+            android:textSize="20sp"
+            android:textColor="#ff000000"
+            android:id="@+id/LaunchPlaceText"/>
+        <EditText
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="90dp"
+            android:layout_alignBottom="@id/LaunchPlaceText"
+            android:background="@drawable/seteditview"
+            android:id="@+id/LaunchPlace"
+            android:hint="最多能使用10字描述"
+            android:textColorHint="#7a7a7a"
+            android:textSize="17sp"
+            android:paddingLeft="7px"
+            android:paddingTop="5px"
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/LaunchPlaceLayout"
+        android:id="@+id/LaunchPriceLayout"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="30dp"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="价格:"
+            android:textSize="20sp"
+            android:textColor="#ff000000"
+            android:id="@+id/LaunchPriceText"/>
+        <EditText
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="90dp"
+            android:layout_alignBottom="@id/LaunchPriceText"
+            android:id="@+id/LaunchPrice"
+            android:hint="请输入6位以下整数"
+            android:textColorHint="#7a7a7a"
+            android:inputType="numberDecimal"
+            android:textSize="17sp"
+            android:paddingLeft="7px"
+            android:paddingTop="3px"
+            android:background="@drawable/seteditview"
+            android:digits="1234567890-~"
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/LaunchPriceLayout"
+        android:id="@+id/LaunchTimeLayout"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="预计用时:"
+            android:textSize="20sp"
+            android:textColor="#ff000000"
+            android:id="@+id/LaunchTimeText"/>
+        <EditText
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="90dp"
+            android:layout_alignBottom="@id/LaunchTimeText"
+            android:id="@+id/LaunchTime"
+            android:hint="最多使用20字描述"
+            android:textColorHint="#7a7a7a"
+            android:textSize="17sp"
+            android:paddingTop="5px"
+            android:paddingLeft="7px"
+            android:background="@drawable/seteditview"
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/LaunchTimeLayout"
+        android:id="@+id/LaunchBrifingLayout"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="30dp"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="简介:"
+            android:textSize="20sp"
+            android:textColor="#ff000000"
+            android:id="@+id/LaunchBrifingText"/>
+        <EditText
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="90dp"
+            android:id="@+id/LaunchBrifing"
+            android:hint="最多使用200字描述"
+            android:textColorHint="#7a7a7a"
+            android:textSize="17sp"
+            android:paddingLeft="7px"
+            android:paddingTop="3px"
+            android:background="@drawable/seteditview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:height="90dp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/LaunchBrifingLayout"
+        android:id="@+id/LaunchBottonLayout"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="30dp"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/LaunchConfirmButton"
+            android:layout_marginRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="确认"
+            android:textSize="20sp"
+            android:textColor="#ff000000"/>
+    </RelativeLayout>
+</RelativeLayout>

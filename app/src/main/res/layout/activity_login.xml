@@ -10,13 +10,17 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:id="@+id/NewUsernameLayout">
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="请输入新用户名"
+            android:digits="1234567890abcdefghijklmnopqrstuvwxyz"
             android:textSize="20dp"
+            android:inputType="textEmailAddress"
             android:id="@+id/LoginUsername"
             android:gravity="center"/>
     </android.support.design.widget.TextInputLayout>
@@ -26,7 +30,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/NewUsernameLayout"
         android:id="@+id/NewPasswordLayout"
-        android:layout_marginTop="30dp">
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="20dp">
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,7 +48,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/NewPasswordLayout"
         android:id="@+id/ConfirmPasswordLayout"
-        android:layout_marginTop="30dp">
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="20dp">
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,23 +66,49 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/ConfirmPasswordLayout"
         android:id="@+id/PhoneLayout"
-        android:layout_marginTop="30dp">
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="20dp">
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="请输入手机号码"
             android:id="@+id/LoginPhone"
-            android:inputType="textPassword"
+            android:inputType="number"
             android:textSize="20dp"
             android:gravity="center"/>
     </android.support.design.widget.TextInputLayout>
 
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/LoginSexGroup"
+        android:layout_below="@id/PhoneLayout"
+        android:gravity="center"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal">
+        <RadioButton
+            android:id="@+id/MaleButton"
+            android:layout_width="wrap_content"
+            android:checked="true"
+            android:layout_height="wrap_content"
+            android:text="男"
+            android:textSize="20sp"/>
+        <RadioButton
+            android:id="@+id/FelmaleButton"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="女"
+            android:textSize="20sp"/>
+    </RadioGroup>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/PhoneLayout"
+        android:layout_below="@id/LoginSexGroup"
         android:gravity="center"
-        android:layout_marginTop="30dp">
+        android:layout_marginTop="20dp">
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
