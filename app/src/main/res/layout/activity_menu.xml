@@ -41,6 +41,7 @@
         <TextView
             android:text="@string/menu_main_title_by_place"
             style="@style/menu_main_sort"
+            android:id="@+id/menu_sort_by_place"
             />
         <Button
             android:layout_width="1dp"
@@ -49,6 +50,7 @@
         <TextView
             android:text="@string/menu_main_title_price"
             style="@style/menu_main_sort"
+            android:id="@+id/menu_sort_by_price"
             />
         <Button
             android:layout_width="1dp"
@@ -57,6 +59,7 @@
         <TextView
             android:text="@string/menu_main_evaluate"
             style="@style/menu_main_sort"
+            android:id="@+id/menu_sort_by_evalute"
             />
         <Button
             android:layout_width="1dp"
@@ -70,7 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/menu_main_unfold"
-            android:layout_gravity="center|start"
+            android:layout_gravity="center_vertical|start"
             />
     </LinearLayout>
     <Button
@@ -88,30 +91,40 @@
         android:id="@+id/menu_main_change_state"
 
         >
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="信息"
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:textSize="20sp"
-            android:layout_alignParentLeft="true"/>
+            android:src="@drawable/menu_main_list"
+            android:id="@+id/menu_main_list"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:clickable="true"/>
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="15dp"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
-            android:src="@drawable/menu_main_person_center"
-            android:layout_centerInParent="true"/>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="信息"
-            android:textSize="20sp"
+            android:src="@drawable/menu_main_person_center"
+            android:id="@+id/menu_main_person_center"
+            android:layout_centerInParent="true"
+            android:clickable="true"/>
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
             android:gravity="center"
+            android:src="@drawable/menu_main_add"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:id="@+id/button" />
+            android:id="@+id/menu_main_add"
+            android:clickable="true"/>
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -121,6 +134,7 @@
         <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:descendantFocusability="blocksDescendants"
             android:layout_below="@id/menu_between_sort_and_list"
             android:id="@+id/menu_main_listview"
             >

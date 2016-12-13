@@ -23,6 +23,15 @@ public class LogonActivity extends AppCompatActivity {
             public void onClick(View view)
             {
                 Toast.makeText(LogonActivity.this,"登录被点击",Toast.LENGTH_SHORT).show();
+                /**test by zackzhao
+                 *
+                 */
+                Intent intent = new Intent(LogonActivity.this,MenuActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("id","166654");
+                intent.putExtras(bundle);
+                startActivity(intent);
+                /********************************************************************************/
             }
         });
 

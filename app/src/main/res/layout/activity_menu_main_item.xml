@@ -33,7 +33,8 @@
                     android:layout_height="wrap_content"
                     android:text="安卓"
                     android:textSize="15sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:id="@+id/menu_person_name"/>
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -43,12 +44,14 @@
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:src="@mipmap/menu_main_item_location2"/>
+                        android:src="@mipmap/menu_main_item_location2"
+                        android:id="@+id/menu_main_item_location_icon"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="广州"
-                        android:textSize="10sp"/>
+                        android:textSize="10sp"
+                        android:id="@+id/menu_person_address"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -59,14 +62,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="评价："
-                        android:textSize="10sp"/>
+                        android:textSize="10sp"
+                        android:id="@+id/menu_evaluate"/>
                     <RatingBar
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="@style/Widget.AppCompat.RatingBar.Small"
                         android:numStars="5"
                         android:isIndicator="true"
-                        android:rating="5"/>
+                        android:rating="5"
+                        android:id="@+id/menu_evaluate_bar"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -79,10 +84,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="去预约"
+                    android:text="￥：000"
                     android:textSize="20sp"
                     android:padding="5dp"
                     android:textColor="#ff8c23"
+                    android:id="@+id/menu_go_to_connect"
                     android:background="@drawable/menu_make_appointment_border"/>
 
             </LinearLayout>
@@ -96,15 +102,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="没有描述"
-                android:textSize="20sp"/>
+                android:textSize="20sp"
+                android:id="@+id/menu_brief_description"/>
         </RelativeLayout>
     </RelativeLayout>
-    <Button
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/gray"
         android:layout_below="@id/menu_listview_item" />
-    <Button
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/gray"
