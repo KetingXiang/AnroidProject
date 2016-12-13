@@ -44,6 +44,7 @@ public class MenuActivity extends AppCompatActivity {
     private ImageView menu_main_add;
     private ImageView menu_main_person_center;
     private String personId;
+    private String programId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,9 +67,11 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.i("tag","click");
+                programId = list.get(position).getMenu_personName();
                 Intent intent = new Intent(MenuActivity.this,DetailActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("id",personId);
+                bundle.putString("programId",programId);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -338,5 +341,4 @@ public class MenuActivity extends AppCompatActivity {
             listView.setAdapter(adapter);
         }
     }
-
 }
