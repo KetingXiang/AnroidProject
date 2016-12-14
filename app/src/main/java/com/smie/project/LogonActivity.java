@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -61,10 +62,10 @@ public class LogonActivity extends AppCompatActivity {
                         PasswordLayout.setErrorEnabled(true);
                         PasswordLayout.setError("密码应为6~10位");
                     } else {
-                        Intent intent = new Intent(LogonActivity.this, LaunchActivity.class);//方便试验
-                        startActivity(intent);
+//                        Intent intent = new Intent(LogonActivity.this, LaunchActivity.class);//方便试验
+//                        startActivity(intent);
                         PasswordLayout.setErrorEnabled(false);
-                        sendRequestWithHttpURLConnection("http://172.18.57.116:8000/findusers/"+"strange");
+                        sendRequestWithHttpURLConnection("http://172.18.57.116:8000/findusers/"+LogonUsername.getText().toString());
                     }
                 }
             }
@@ -97,9 +98,11 @@ public class LogonActivity extends AppCompatActivity {
                     for(String item:response){
                         Log.i("response1",""+item);
                     }
-                    if(response.get(0).equals("123"))//de dao mima
+                    if(response.get(0).equals(LogonPassword.getText().toString()))//de dao mima
                     {
-
+                        //dengluchenggong liliwei
+                        Toast.makeText(LogonActivity.this,"ID: "+LogonUsername.getText().toString()+"\nPW: "
+                                +LogonPassword.getText().toString()+"\nRP: "+response.get(0),Toast.LENGTH_SHORT).show();
                         //strange zengjunlin
                         //跳转到主界面
                         Intent intent = new Intent(LogonActivity.this,MenuActivity.class);
@@ -108,7 +111,12 @@ public class LogonActivity extends AppCompatActivity {
                         intent.putExtras(bundle);
                         startActivity(intent);
                     }
-
+                    else
+                    {
+                        //denglushibai liliwei
+                        PasswordLayout.setErrorEnabled(true);
+                        PasswordLayout.setError("登录密码有误,请检查登录名及密码");
+                    }
                     break;
             }
         }
