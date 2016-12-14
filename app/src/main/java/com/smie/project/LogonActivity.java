@@ -1,6 +1,5 @@
 package com.smie.project;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -30,19 +29,27 @@ public class LogonActivity extends AppCompatActivity {
 
     private static final int SHOW_RESPONSE = 0;
 
-    private final Button Logon = (Button) findViewById(R.id.LogonButton);
-    private final Button Login = (Button) findViewById(R.id.LogonLoginButton);
-    private final TextInputLayout UesrnameLayout = (TextInputLayout) findViewById(R.id.UsernameLayout);
-    private final EditText LogonUsername = UesrnameLayout.getEditText();
-    private final TextInputLayout PasswordLayout = (TextInputLayout) findViewById(R.id.PasswordLayout);
-    private final EditText LogonPassword = PasswordLayout.getEditText();
-    private SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+    private Button Logon;
+    private Button Login;
+    private TextInputLayout UesrnameLayout;
+    private EditText LogonUsername;
+    private TextInputLayout PasswordLayout;
+    private EditText LogonPassword;
+    private SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logon);
-        if(sharedPref.getBoolean("STATE",true))//如果STATE是true就马上跳转到menu去 记得把用户id传过去
+        Logon = (Button) findViewById(R.id.LogonButton);
+        Login = (Button) findViewById(R.id.LogonLoginButton);
+        UesrnameLayout = (TextInputLayout) findViewById(R.id.UsernameLayout);
+        LogonUsername = UesrnameLayout.getEditText();
+        PasswordLayout = (TextInputLayout) findViewById(R.id.PasswordLayout);
+        LogonPassword = PasswordLayout.getEditText();
+        sharedPref = this.getPreferences(MODE_PRIVATE);
+
+        if(sharedPref.getBoolean("STATE",false))//如果STATE是true就马上跳转到menu去 记得把用户id传过去
         {
             // 跳转到菜单界面
             // 曾钧麟

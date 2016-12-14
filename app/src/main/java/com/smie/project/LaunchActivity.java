@@ -28,17 +28,24 @@ import java.util.ArrayList;
 public class LaunchActivity extends AppCompatActivity {
 
     private static final int SHOW_RESPONSE = 0;
-    private final Button Confirm = (Button) findViewById(R.id.LaunchConfirmButton);
-    private final EditText LaunchName = (EditText) findViewById(R.id.LaunchName);
-    private final EditText LaunchPrice = (EditText) findViewById(R.id.LaunchPrice);
-    private final EditText LaunchPlace = (EditText) findViewById(R.id.LaunchPlace);
-    private final EditText LaunchTime = (EditText) findViewById(R.id.LaunchTime);
-    private final EditText LaunchBrifing = (EditText) findViewById(R.id.LaunchBrifing);
+    private  Button Confirm ;
+    private  EditText LaunchName ;
+    private  EditText LaunchPrice ;
+    private  EditText LaunchPlace ;
+    private  EditText LaunchTime ;
+    private  EditText LaunchBrifing ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
+
+        Confirm = (Button) findViewById(R.id.LaunchConfirmButton);
+        LaunchName = (EditText) findViewById(R.id.LaunchName);
+        LaunchPrice = (EditText) findViewById(R.id.LaunchPrice);
+        LaunchPlace = (EditText) findViewById(R.id.LaunchPlace);
+        LaunchTime = (EditText) findViewById(R.id.LaunchTime);
+        LaunchBrifing = (EditText) findViewById(R.id.LaunchBrifing);
 
         Confirm.setOnClickListener(new View.OnClickListener()
         {

@@ -31,18 +31,18 @@ import java.util.ArrayList;
 public class LoginActivity extends AppCompatActivity{
 
     private static final int SHOW_RESPONSE = 0;
-    private final Button LoginLoginLoginButton = (Button) findViewById(R.id.LoginLoginButton);
-    private final Button Loginreturn = (Button) findViewById(R.id.Loginreturn);
-    private final TextInputLayout NewPasswordLayout = (TextInputLayout) findViewById(R.id.NewPasswordLayout);
-    private final EditText NewPassword = NewPasswordLayout.getEditText();
-    private final TextInputLayout ConfirmPasswordLayout = (TextInputLayout) findViewById(R.id.ConfirmPasswordLayout);
-    private final EditText ConfirmPassword = ConfirmPasswordLayout.getEditText();
-    private final TextInputLayout NewUsernameLayout = (TextInputLayout) findViewById(R.id.NewUsernameLayout);
-    private final EditText NewUsername = NewUsernameLayout.getEditText();
-    private final TextInputLayout PhoneLayout = (TextInputLayout) findViewById(R.id.PhoneLayout);
-    private final EditText Phone = PhoneLayout.getEditText();
-    private final RadioButton MaleButton = (RadioButton) findViewById(R.id.MaleButton);
-    private final RadioButton FemaleButton = (RadioButton) findViewById(R.id.FelmaleButton);
+    private  Button LoginLoginLoginButton;
+    private  Button Loginreturn;
+    private  TextInputLayout NewPasswordLayout;
+    private  EditText NewPassword;
+    private  TextInputLayout ConfirmPasswordLayout;
+    private  EditText ConfirmPassword;
+    private  TextInputLayout NewUsernameLayout;
+    private  EditText NewUsername;
+    private  TextInputLayout PhoneLayout;
+    private  EditText Phone;
+    private  RadioButton MaleButton;
+    private  RadioButton FemaleButton;
 
     private final String[] sex = new String[1];
 
@@ -51,6 +51,18 @@ public class LoginActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        LoginLoginLoginButton = (Button) findViewById(R.id.LoginLoginButton);
+        Loginreturn = (Button) findViewById(R.id.Loginreturn);
+        NewPasswordLayout = (TextInputLayout) findViewById(R.id.NewPasswordLayout);
+        NewPassword = NewPasswordLayout.getEditText();
+        ConfirmPasswordLayout = (TextInputLayout) findViewById(R.id.ConfirmPasswordLayout);
+        ConfirmPassword = ConfirmPasswordLayout.getEditText();
+        NewUsernameLayout = (TextInputLayout) findViewById(R.id.NewUsernameLayout);
+        NewUsername = NewUsernameLayout.getEditText();
+        PhoneLayout = (TextInputLayout) findViewById(R.id.PhoneLayout);
+        Phone = PhoneLayout.getEditText();
+        MaleButton = (RadioButton) findViewById(R.id.MaleButton);
+        FemaleButton = (RadioButton) findViewById(R.id.FelmaleButton);
 
         Loginreturn.setOnClickListener(new View.OnClickListener()
         {

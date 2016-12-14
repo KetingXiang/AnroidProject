@@ -327,7 +327,7 @@ public class MenuActivity extends AppCompatActivity {
                     startActivity(intent);
                     break;
                 case R.id.menu_main_add:
-                    Intent intent2 = new Intent(MenuActivity.this,LogonActivity.class);
+                    Intent intent2 = new Intent(MenuActivity.this,LaunchActivity.class);
 
                     // 跳转到新增项目界面时也需要传递用户id 曾钧麟
                     Bundle bundle2 = new Bundle();
