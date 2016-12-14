@@ -1,6 +1,7 @@
 package com.smie.project;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -39,11 +40,26 @@ public class LogonActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logon);
+        if(sharedPref.getBoolean("STATE",true))//如果STATE是true就马上跳转到menu去 记得把用户id传过去
+        {
+            //跳转到主界面
+            Intent intent = new Intent(LogonActivity.this,MenuActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("id",LogonUsername.getText().toString());
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
+
+        final SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean("STATE",false);
+        editor.commit();
+
 
         Logon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Toast.makeText(LogonActivity.this,"登录被点击",Toast.LENGTH_SHORT).show();
+
                 if (TextUtils.isEmpty(LogonUsername.getText().toString())) {
                     UesrnameLayout.setErrorEnabled(true);
                     UesrnameLayout.setError("登录名不能为空");
@@ -66,6 +82,10 @@ public class LogonActivity extends AppCompatActivity {
 //                        startActivity(intent);
                         PasswordLayout.setErrorEnabled(false);
                         sendRequestWithHttpURLConnection("http://172.18.57.116:8000/findusers/"+LogonUsername.getText().toString());
+                        //更改状态 不用再进入登录页面了
+                        editor.putString("id",LogonUsername.getText().toString());
+                        editor.putBoolean("STATE",true);
+                        editor.commit();
                     }
                 }
             }

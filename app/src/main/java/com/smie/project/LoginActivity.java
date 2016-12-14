@@ -2,38 +2,55 @@ package com.smie.project;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+
 /**
  * Created by LeviLee on 16-11-25.
  */
 public class LoginActivity extends AppCompatActivity{
+
+    private static final int SHOW_RESPONSE = 0;
+    private final Button LoginLoginLoginButton = (Button) findViewById(R.id.LoginLoginButton);
+    private final Button Loginreturn = (Button) findViewById(R.id.Loginreturn);
+    private final TextInputLayout NewPasswordLayout = (TextInputLayout) findViewById(R.id.NewPasswordLayout);
+    private final EditText NewPassword = NewPasswordLayout.getEditText();
+    private final TextInputLayout ConfirmPasswordLayout = (TextInputLayout) findViewById(R.id.ConfirmPasswordLayout);
+    private final EditText ConfirmPassword = ConfirmPasswordLayout.getEditText();
+    private final TextInputLayout NewUsernameLayout = (TextInputLayout) findViewById(R.id.NewUsernameLayout);
+    private final EditText NewUsername = NewUsernameLayout.getEditText();
+    private final TextInputLayout PhoneLayout = (TextInputLayout) findViewById(R.id.PhoneLayout);
+    private final EditText Phone = PhoneLayout.getEditText();
+    private final RadioButton MaleButton = (RadioButton) findViewById(R.id.MaleButton);
+    private final RadioButton FemaleButton = (RadioButton) findViewById(R.id.FelmaleButton);
+
+    private final String[] sex = new String[1];
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        final Button LoginLoginLoginButton = (Button) findViewById(R.id.LoginLoginButton);
-        final Button Loginreturn = (Button) findViewById(R.id.Loginreturn);
-        final TextInputLayout NewPasswordLayout = (TextInputLayout) findViewById(R.id.NewPasswordLayout);
-        final EditText NewPassword = NewPasswordLayout.getEditText();
-        final TextInputLayout ConfirmPasswordLayout = (TextInputLayout) findViewById(R.id.ConfirmPasswordLayout);
-        final EditText ConfirmPassword = ConfirmPasswordLayout.getEditText();
-        final TextInputLayout NewUsernameLayout = (TextInputLayout) findViewById(R.id.NewUsernameLayout);
-        final EditText NewUsername = NewUsernameLayout.getEditText();
-        final TextInputLayout PhoneLayout = (TextInputLayout) findViewById(R.id.PhoneLayout);
-        final EditText Phone = PhoneLayout.getEditText();
-        final RadioButton MaleButton = (RadioButton) findViewById(R.id.MaleButton);
-        final RadioButton FemaleButton = (RadioButton) findViewById(R.id.FelmaleButton);
-
-        final String[] sex = new String[1];
 
         Loginreturn.setOnClickListener(new View.OnClickListener()
         {
@@ -132,12 +149,126 @@ public class LoginActivity extends AppCompatActivity{
                                 {
                                     sex[0] = "Female";
                                 }
-                                Toast.makeText(LoginActivity.this,sex[0],Toast.LENGTH_SHORT).show();
+                                //xinjianyonghu liliwei
+                                sendRequestWithHttpURLConnection("http://172.18.57.116:8000/adddusers/"+NewUsername.getText().toString()
+                                +"&"+NewPassword.getText().toString()+"&"+Phone.getText().toString()+"&"+sex[0]
+                                +"&http://i1.piimg.com/567571/bcad4a3672028efa.jpg&http://i1.piimg.com/567571/4a263c9ec7a5e4be.jpg&给自己改个个性签名吧!");
                             }
                         }
                     }
                 }
             }
         });
+    }
+
+    private void sendRequestWithHttpURLConnection(final String url){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                findprograms(url);
+            }
+        }).start();
+    }
+    private Handler handler = new Handler(){
+        public void handleMessage(Message msg){
+            switch (msg.what){
+                case SHOW_RESPONSE:
+                    ArrayList<String> response = (ArrayList<String>) msg.obj;
+                    for(String item:response){
+                        Log.i("response1",""+item);
+                    }
+                    if(response.get(0).equals("success"))//chakan shifou chenggong
+                    {
+                        //zhucechenggong liliwei
+                        Toast.makeText(LoginActivity.this,"您的用户名是: "+NewUsername.getText().toString()+"\n欢迎登录!"//;
+                                +"\nfanhuixinxishi: "+response.get(0),Toast.LENGTH_SHORT).show();//测试用
+                        Intent intent = new Intent(LoginActivity.this, LogonActivity.class);
+                        startActivity(intent);
+                    }
+                    else
+                    {
+                        //zhuceshibai liliwei
+                        NewUsernameLayout.setErrorEnabled(true);
+                        NewUsernameLayout.setError("此用户名已存在");
+                    }
+                    break;
+            }
+        }
+    };
+    private void findprograms(String url){
+        Log.i("tag",url);
+        HttpURLConnection connection = null;
+        try{
+            connection = (HttpURLConnection)((new URL(url.toString())).openConnection());
+            connection.setRequestMethod("GET");
+            connection.setReadTimeout(8000);
+            connection.setConnectTimeout(8000);
+            connection.setRequestProperty("Charset","UTF-8");
+//            connection.setDoOutput(true);
+
+
+            Log.i("tag","connect successfuly "+connection.getResponseCode());
+            InputStream in = connection.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            String line;
+            StringBuilder response = new StringBuilder();
+            while((line = reader.readLine()) != null){
+                response.append(line);
+            }
+            Message message = new Message();
+            message.what = SHOW_RESPONSE;
+            Log.i("tag",""+(response.toString()));
+            message.obj = parseXMLWithPull(response.toString());
+
+            handler.sendMessage(message);
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            if (connection != null){
+                connection.disconnect();
+            }
+        }
+    }
+
+    /**解析xml
+     *
+     * @param xmlData :完整的xml字符串文本
+     * @return 储存需要信息的数组
+     */
+    private ArrayList<String> parseXMLWithPull(String xmlData){
+        Log.i("tag2",xmlData);
+        ArrayList<String> info = new ArrayList<String>();
+        try{
+            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+            XmlPullParser xmlPullParser = factory.newPullParser();
+            xmlPullParser.setInput(new StringReader(xmlData));
+
+            int eventType = xmlPullParser.getEventType();
+
+            while (eventType != XmlPullParser.END_DOCUMENT){
+                String nodeName = xmlPullParser.getName();
+                switch (eventType){
+                    case XmlPullParser.START_TAG:
+                        if ("string".equals(nodeName)){
+                            info.add(xmlPullParser.nextText());
+                            Log.i("infofff",""+info.isEmpty());
+                        }
+                        break;
+                    case XmlPullParser.END_TAG:
+
+                        break;
+                    default:
+                        break;
+
+                }
+                eventType = xmlPullParser.next();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        for(String item:info){
+            Log.i("info222",""+item);
+        }
+        return info;
     }
 }
