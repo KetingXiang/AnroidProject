@@ -147,7 +147,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@id/DetailTextView2"
                     android:layout_below="@id/DetailTextView2"
-                    android:text="暂无详细信息"/>
+                    android:text="暂无详细信息"
+                    android:id="@+id/DetailIntroduction" />
 
 
 

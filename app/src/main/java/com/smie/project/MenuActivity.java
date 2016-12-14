@@ -53,6 +53,7 @@ public class MenuActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         personId = bundle.getString("id");
+
         sendRequestWithHttpURLConnection();
         SortListener sortListener = new SortListener();
         sort_by_evaluate.setOnClickListener(sortListener);
@@ -190,7 +191,6 @@ public class MenuActivity extends AppCompatActivity {
             connection.setRequestProperty("Charset","UTF-8");
 //            connection.setDoOutput(true);
 
-
             Log.i("tag","connect successfuly "+connection.getResponseCode());
             InputStream in = connection.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
@@ -322,15 +322,18 @@ public class MenuActivity extends AppCompatActivity {
                 case R.id.menu_main_person_center:
                     Intent intent = new Intent(MenuActivity.this,PersonActivity.class);
                     Bundle bundle = new Bundle();
-
-
                     bundle.putString("id",personId);
                     intent.putExtras(bundle);
                     startActivity(intent);
                     break;
                 case R.id.menu_main_add:
-
                     Intent intent2 = new Intent(MenuActivity.this,LogonActivity.class);
+
+                    // 跳转到新增项目界面时也需要传递用户id 曾钧麟
+                    Bundle bundle2 = new Bundle();
+                    bundle2.putString("id",personId);
+                    intent2.putExtras(bundle2);
+
                     startActivity(intent2);
                     break;
                 case R.id.menu_main_list:
