@@ -74,8 +74,6 @@ public class LoginActivity extends AppCompatActivity{
                     ConfirmPasswordLayout.setErrorEnabled(false);
                     NewPasswordLayout.setErrorEnabled(false);
                     PhoneLayout.setErrorEnabled(false);
-
-
                 }
                 else if(NewUsername.getText().toString().length() > 10)
                 {

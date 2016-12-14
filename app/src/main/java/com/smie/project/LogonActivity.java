@@ -1,5 +1,6 @@
 package com.smie.project;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ public class LogonActivity extends AppCompatActivity {
     private final EditText LogonUsername = UesrnameLayout.getEditText();
     private final TextInputLayout PasswordLayout = (TextInputLayout) findViewById(R.id.PasswordLayout);
     private final EditText LogonPassword = PasswordLayout.getEditText();
+    private SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +44,8 @@ public class LogonActivity extends AppCompatActivity {
         setContentView(R.layout.activity_logon);
         if(sharedPref.getBoolean("STATE",true))//如果STATE是true就马上跳转到menu去 记得把用户id传过去
         {
-            //跳转到主界面
+            // 跳转到菜单界面
+            // 曾钧麟
             Intent intent = new Intent(LogonActivity.this,MenuActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString("id",LogonUsername.getText().toString());
@@ -52,7 +55,7 @@ public class LogonActivity extends AppCompatActivity {
 
         final SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean("STATE",false);
-        editor.commit();
+        editor.apply();
 
 
         Logon.setOnClickListener(new View.OnClickListener() {
@@ -123,7 +126,7 @@ public class LogonActivity extends AppCompatActivity {
                         //dengluchenggong liliwei
                         Toast.makeText(LogonActivity.this,"ID: "+LogonUsername.getText().toString()+"\nPW: "
                                 +LogonPassword.getText().toString()+"\nRP: "+response.get(0),Toast.LENGTH_SHORT).show();
-                        //strange zengjunlin
+                        //曾钧麟
                         //跳转到主界面
                         Intent intent = new Intent(LogonActivity.this,MenuActivity.class);
                         Bundle bundle = new Bundle();
