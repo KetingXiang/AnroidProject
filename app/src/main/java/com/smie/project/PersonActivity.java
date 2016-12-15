@@ -445,9 +445,19 @@ public class PersonActivity extends AppCompatActivity {
                         }
                         type = parser.next();
                     }
+                    ArrayList<Bitmap> bitmapArrayList = new ArrayList<Bitmap>();
+                    Bitmap bitmap1 = getBitmap(list.get(3));
+                    bitmapArrayList.add(bitmap1);
+                    Bitmap bitmap2 = getBitmap(list.get(4));
+                    bitmapArrayList.add(bitmap2);
+
+                    Bundle bundle = new Bundle();
+                    bundle.putStringArrayList("string", list);
+                    bundle.putParcelableArrayList("bitmap", bitmapArrayList);
+
                     Message message = new Message();
                     message.what = DECODE_XML;
-                    message.obj = list;
+                    message.setData(bundle);
                     mHandlerDb.sendMessage(message);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -464,13 +474,14 @@ public class PersonActivity extends AppCompatActivity {
         public void handleMessage(Message message) {
             switch (message.what) {
                 case DECODE_XML:
-                    ArrayList<String> list = (ArrayList<String>)message.obj;
+                    Bundle bundle = message.getData();
+                    ArrayList<String> list = bundle.getStringArrayList("string");
 
                     // 设置昵称
                     personNickname.setText(personId);
 
                     // 设置性别
-                    if (list.get(2).equals("男")) {
+                    if (list.get(2).equals("male")) {
                         Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.mipmap.man);
                         personGender.setImageBitmap(bitmap);
                     }
@@ -482,14 +493,13 @@ public class PersonActivity extends AppCompatActivity {
                     // 设置个性签名
                     personWords.setText(list.get(5));
 
+                    ArrayList<Bitmap> bitmapArrayList = bundle.getParcelableArrayList("bitmap");
                     // 设置头像
-                    String headUrl = list.get(3);
-                    Bitmap headBitmap = getBitmap(headUrl);
+                    Bitmap headBitmap = bitmapArrayList.get(0);
                     personHeadImage.setImageBitmap(headBitmap);
 
                     // 设置背景
-                    String backUrl = list.get(4);
-                    Bitmap backBitmap = getBitmap(backUrl);
+                    Bitmap backBitmap = bitmapArrayList.get(1);
                     personBackground.setImageBitmap(backBitmap);
                     break;
                 default:
