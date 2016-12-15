@@ -35,6 +35,8 @@ public class DetailActivity extends AppCompatActivity {
     private RatingBar DetailRateBar;
     private TextView DetailIntroduction;
     private TextView DetailPrice;
+    private TextView DetailLocation;
+    private TextView DetailTime;
 
     private static final int SHOW_RESPONSE = 0;
 
@@ -47,6 +49,13 @@ public class DetailActivity extends AppCompatActivity {
         Bundle bundle = intent.getExtras();
         personId = bundle.getString("id");
         programId = bundle.getString("programId");
+
+        DetailName = (TextView)findViewById(R.id.DetailName);
+        DetailRateBar = (RatingBar)findViewById(R.id.DetailRateBar);
+        DetailIntroduction = (TextView)findViewById(R.id.DetailIntroduction);
+        DetailPrice = (TextView)findViewById(R.id.DetailPrice);
+        DetailLocation = (TextView)findViewById(R.id.DetailLocation);
+        DetailTime = (TextView)findViewById(R.id.DetailTime);
 
         sendRequestWithHttpURLConnection();
 
