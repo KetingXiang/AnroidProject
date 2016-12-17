@@ -15,7 +15,8 @@
         <activity android:name=".CommentActivity" />
         <activity android:name=".MenuActivity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".LogonActivity"
+        <activity
+            android:name=".LogonActivity"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,7 +28,8 @@
         <activity android:name=".MyCollectedActivity" />
         <activity android:name=".MyParticipatedActivity" />
         <activity android:name=".PersonActivity" />
-        <activity android:name=".LaunchActivity"></activity>
+        <activity android:name=".LaunchActivity" />
+        <activity android:name=".MainActivity"></activity>
     </application>
 
 </manifest>

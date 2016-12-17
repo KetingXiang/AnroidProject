@@ -1,30 +1,29 @@
 package com.smie.project;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.view.menu.MenuAdapter;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -32,7 +31,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MenuActivity extends AppCompatActivity {
+/**
+ * Created by Administrator on 2016/12/17.
+ */
+
+public class MenuTabPage extends Fragment {
+
+    private View mViewRoot;
     private List<MenuPersonItem> list = new ArrayList<MenuPersonItem>();
     private static final String baseurl ="http://172.18.57.116:8000/";
     private static final int SHOW_RESPONSE = 0;
@@ -40,28 +45,37 @@ public class MenuActivity extends AppCompatActivity {
     private TextView sort_by_place;
     private TextView sort_by_price;
     private TextView sort_by_evaluate;
-    private ImageView menu_main_list;
-    private ImageView menu_main_add;
-    private ImageView menu_main_person_center;
     private String personId;
     private String programId;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu);
-        findViews();
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        personId = bundle.getString("id");
 
+    public void setId(Bundle bundle){
+        personId = bundle.getString("id");
+    }
+
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        //初始建立
+        mViewRoot = inflater.inflate(R.layout.activity_menu, container, false);
+        initView(mViewRoot);
+        return mViewRoot;
+    }
+
+    @Override
+    public void onStart() {
+        //进入页面
+        super.onStart();
         sendRequestWithHttpURLConnection();
-        SortListener sortListener = new SortListener();
+    }
+
+    private void initView(View root) {
+        findViews(root);
+
+        MenuTabPage.SortListener sortListener = new MenuTabPage.SortListener();
         sort_by_evaluate.setOnClickListener(sortListener);
         sort_by_price.setOnClickListener(sortListener);
         sort_by_place.setOnClickListener(sortListener);
-        menu_main_list.setOnClickListener(sortListener);
-        menu_main_person_center.setOnClickListener(sortListener);
-        menu_main_add.setOnClickListener(sortListener);
 
         Log.i("tag","setAdapter");
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -69,7 +83,7 @@ public class MenuActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.i("tag","click");
                 programId = list.get(position).getMenu_personName();
-                Intent intent = new Intent(MenuActivity.this,DetailActivity.class);
+                Intent intent = new Intent(getActivity(),DetailActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("id",personId);
                 bundle.putString("programId",programId);
@@ -79,22 +93,18 @@ public class MenuActivity extends AppCompatActivity {
         });
     }
 
-    private void findViews(){
-        listView = (ListView)findViewById(R.id.menu_main_listview);
-        sort_by_place = (TextView) findViewById(R.id.menu_sort_by_place);
-        sort_by_evaluate = (TextView)findViewById(R.id.menu_sort_by_evalute);
-        sort_by_price = (TextView)findViewById(R.id.menu_sort_by_price);
-        /*
-        menu_main_add = (ImageView)findViewById(R.id.menu_main_add);
-        menu_main_list = (ImageView)findViewById(R.id.menu_main_list);
-        menu_main_person_center = (ImageView)findViewById(R.id.menu_main_person_center);
-        */
+    private void findViews(View root){
+        listView = (ListView)root.findViewById(R.id.menu_main_listview);
+        sort_by_place = (TextView)root.findViewById(R.id.menu_sort_by_place);
+        sort_by_evaluate = (TextView)root.findViewById(R.id.menu_sort_by_evalute);
+        sort_by_price = (TextView)root.findViewById(R.id.menu_sort_by_price);
     }
     /**zackzhao
      *
      */
-    private void initPersonItem(List<Map<String,String> > myItem){
+    private void initPersonItem(List<Map<String,String>> myItem){
         Log.i("tag","init");
+        list.clear();
         for (int i = 0;i < myItem.size();i++){
             int menu_personItemId = R.mipmap.ic_launcher;
             int menu_location_icon = R.mipmap.menu_main_item_location2;
@@ -116,7 +126,7 @@ public class MenuActivity extends AppCompatActivity {
                     menu_go_to_connect);
             list.add(person1);
         }
-        MenuPersonItemAdapter adapter = new MenuPersonItemAdapter(this,list);
+        MenuPersonItemAdapter adapter = new MenuPersonItemAdapter(getActivity(),list);
         listView.setAdapter(adapter);
     }
     private Handler handler = new Handler(){
@@ -239,7 +249,7 @@ public class MenuActivity extends AppCompatActivity {
     /**
      * 初始化comp 时传入排序关键字和升序asc,默认降序
      */
-    public class ListMapSortComparator implements Comparator{
+    public class ListMapSortComparator implements Comparator {
 
         private String key;
 
@@ -286,7 +296,7 @@ public class MenuActivity extends AppCompatActivity {
         }
 
     }
-     class SortListener implements View.OnClickListener{
+    class SortListener implements View.OnClickListener{
 
         @Override
         public void onClick(View v) {
@@ -294,35 +304,15 @@ public class MenuActivity extends AppCompatActivity {
                 case R.id.menu_sort_by_place:
                     break;
                 case R.id.menu_sort_by_price:
-                    Collections.sort(list,new ListMapSortComparator("price" ,"desc"));
+                    Collections.sort(list,new MenuTabPage.ListMapSortComparator("price" ,"desc"));
                     break;
                 case R.id.menu_sort_by_evalute:
-                    Collections.sort(list,new ListMapSortComparator("evalute" ,"desc"));
+                    Collections.sort(list,new MenuTabPage.ListMapSortComparator("evalute" ,"desc"));
+                    Collections.sort(list,new MenuTabPage.ListMapSortComparator("evalute" ,"desc"));
                     break;
-                /*
-                case R.id.menu_main_person_center:
-                    Intent intent = new Intent(MenuActivity.this,PersonActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("id",personId);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                    break;
-                case R.id.menu_main_add:
-                    Intent intent2 = new Intent(MenuActivity.this,LaunchActivity.class);
-
-                    // 跳转到新增项目界面时也需要传递用户id 曾钧麟
-                    Bundle bundle2 = new Bundle();
-                    bundle2.putString("id",personId);
-                    intent2.putExtras(bundle2);
-
-                    startActivity(intent2);
-                    break;
-                case R.id.menu_main_list:
-                    break;
-                    */
             }
 
-            MenuPersonItemAdapter adapter = new MenuPersonItemAdapter(MenuActivity.this,list);
+            MenuPersonItemAdapter adapter = new MenuPersonItemAdapter(getActivity(),list);
             listView.setAdapter(adapter);
         }
     }

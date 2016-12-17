@@ -36,6 +36,7 @@ public class LogonActivity extends AppCompatActivity {
     private TextInputLayout PasswordLayout;
     private EditText LogonPassword;
     private SharedPreferences sharedPref;
+    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,14 +54,15 @@ public class LogonActivity extends AppCompatActivity {
         {
             // 跳转到菜单界面
             // 曾钧麟
-            Intent intent = new Intent(LogonActivity.this,MenuActivity.class);
+            //Intent intent = new Intent(LogonActivity.this,MenuActivity.class);
+            Intent intent = new Intent(LogonActivity.this,MainActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString("id",LogonUsername.getText().toString());
             intent.putExtras(bundle);
             startActivity(intent);
         }
 
-        final SharedPreferences.Editor editor = sharedPref.edit();
+        editor = sharedPref.edit();
         editor.putBoolean("STATE",false);
         editor.apply();
 
@@ -92,10 +94,6 @@ public class LogonActivity extends AppCompatActivity {
 //                        startActivity(intent);
                         PasswordLayout.setErrorEnabled(false);
                         sendRequestWithHttpURLConnection("http://172.18.57.116:8000/findusers/"+LogonUsername.getText().toString());
-                        //更改状态 不用再进入登录页面了
-                        editor.putString("id",LogonUsername.getText().toString());
-                        editor.putBoolean("STATE",true);
-                        editor.commit();
                     }
                 }
             }
@@ -134,8 +132,13 @@ public class LogonActivity extends AppCompatActivity {
                         Toast.makeText(LogonActivity.this,"ID: "+LogonUsername.getText().toString()+"\nPW: "
                                 +LogonPassword.getText().toString()+"\nRP: "+response.get(0),Toast.LENGTH_SHORT).show();
                         //曾钧麟
+                        //更改状态 不用再进入登录页面了
+                        editor.putString("id",LogonUsername.getText().toString());
+                        editor.putBoolean("STATE",true);
+                        editor.commit();
                         //跳转到主界面
-                        Intent intent = new Intent(LogonActivity.this,MenuActivity.class);
+                        //Intent intent = new Intent(LogonActivity.this,MenuActivity.class);
+                        Intent intent = new Intent(LogonActivity.this,MainActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("id",LogonUsername.getText().toString());
                         intent.putExtras(bundle);
