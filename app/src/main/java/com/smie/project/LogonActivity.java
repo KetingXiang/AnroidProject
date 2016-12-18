@@ -90,6 +90,7 @@ public class LogonActivity extends AppCompatActivity {
                         PasswordLayout.setErrorEnabled(true);
                         PasswordLayout.setError("密码应为6~10位");
                     } else {
+
 //                        Intent intent = new Intent(LogonActivity.this, LaunchActivity.class);//方便试验
 //                        startActivity(intent);
                         PasswordLayout.setErrorEnabled(false);

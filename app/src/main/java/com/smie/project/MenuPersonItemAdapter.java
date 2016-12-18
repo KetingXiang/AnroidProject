@@ -1,6 +1,10 @@
 package com.smie.project;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +16,7 @@ import android.widget.TextView;
 import org.w3c.dom.Text;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by zackzhao on 2016/12/11.
@@ -20,10 +25,12 @@ import java.util.List;
 public class MenuPersonItemAdapter extends BaseAdapter{
     private Context context;
     private List<MenuPersonItem> list;
+    List<Map<String ,Integer> > foundIndex;
 
-    public MenuPersonItemAdapter(Context context , List<MenuPersonItem>list){
+    public MenuPersonItemAdapter(Context context , List<MenuPersonItem>list , List<Map<String ,Integer> > foundIndex){
         this.context = context;
         this.list = list;
+        this.foundIndex = foundIndex;
     }
     @Override
     public int getCount() {
@@ -56,6 +63,9 @@ public class MenuPersonItemAdapter extends BaseAdapter{
             viewHolder.menu_personItemId = (ImageView) convertView.findViewById(R.id.menu_head_sculpture);
             viewHolder.menu_location_icon = (ImageView) convertView.findViewById(R.id.menu_main_item_location_icon);
             viewHolder.menu_personName = (TextView)convertView.findViewById(R.id.menu_person_name);
+
+
+
             viewHolder.menu_personAddress = (TextView)convertView.findViewById(R.id.menu_person_address);
             viewHolder.menu_evaluate = (TextView)convertView.findViewById(R.id.menu_evaluate);
             viewHolder.menu_evaluta_bar = (RatingBar)convertView.findViewById(R.id.menu_evaluate_bar);
@@ -66,9 +76,27 @@ public class MenuPersonItemAdapter extends BaseAdapter{
             convertView = view;
             viewHolder = (MenuPersonItemAdapter.ViewHolder)convertView.getTag();
         }
+        /*
+
+         */
+        if (foundIndex.size() != 0){
+            int start = foundIndex.get(position).get("start");
+            int end = foundIndex.get(position).get("end");
+            SpannableStringBuilder builder = new SpannableStringBuilder(list.get(position).getMenu_personName());
+            ForegroundColorSpan redSpan = new ForegroundColorSpan(Color.RED);
+            builder.setSpan(redSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            viewHolder.menu_personName.setText(builder);
+        }else{
+            viewHolder.menu_personName.setText(list.get(position).getMenu_personName());
+        }
+
+
         viewHolder.menu_personItemId.setImageResource(list.get(position).getMenu_personItemId());
         viewHolder.menu_location_icon.setImageResource(list.get(position).getMenu_location_icon());
-        viewHolder.menu_personName.setText(list.get(position).getMenu_personName());
+
+
+
+
         viewHolder.menu_personAddress.setText(list.get(position).getMenu_personAddress());
 //        viewHolder.menu_evaluate.setText(list.get(position).getMenu_evaluate());
         viewHolder.menu_evaluta_bar.setRating(list.get(position).getMenu_evaluta_bar());

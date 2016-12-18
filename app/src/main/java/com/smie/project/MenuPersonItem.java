@@ -8,6 +8,7 @@ import android.widget.TextView;
  */
 
 public class MenuPersonItem {
+    private String menu_programId;
     private int menu_personItemId;
     private int menu_location_icon;
     private String menu_personName;
@@ -17,14 +18,16 @@ public class MenuPersonItem {
     private String menu_personDescription;
     private String menu_go_to_connect;
 
-    public MenuPersonItem(int menu_personItemId,
-                           int menu_location_icon,
+    public MenuPersonItem(String menu_programId,
+                          int menu_personItemId,
+                          int menu_location_icon,
                           String menu_personName,
                           String menu_personAddress,
                           String menu_evaluate,
                           float menu_evaluta_bar,
                           String menu_personDescription,
                           String menu_go_to_connect){
+        this.menu_programId = menu_programId;
         this.menu_personItemId = menu_personItemId;
         this.menu_location_icon = menu_location_icon;
         this.menu_personName = menu_personName;
@@ -60,4 +63,5 @@ public class MenuPersonItem {
     public String getMenu_go_to_connect(){
         return menu_go_to_connect;
     }
+    public String getMenu_programId(){return  menu_programId;}
 }

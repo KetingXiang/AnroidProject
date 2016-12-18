@@ -17,12 +17,19 @@
             android:src="@drawable/menu_main_back"
             android:layout_alignParentLeft="true"
             android:layout_margin="10dp"/>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="请输入关键字"
+            android:layout_centerInParent="true"
+            android:id="@+id/menu_main_edit_found"/>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/menu_main_find"
             android:layout_alignParentRight="true"
-            android:layout_margin="10dp"/>
+            android:layout_margin="10dp"
+            android:id="@+id/menu_main_found"/>
     </RelativeLayout>
     <Button
         android:layout_width="match_parent"

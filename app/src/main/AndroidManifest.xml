@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme.NoActionBar">
         <activity android:name=".DetailActivity" />
         <activity android:name=".CommentActivity" />
-        <activity android:name=".MenuActivity" />
+
         <activity android:name=".LoginActivity" />
         <activity
             android:name=".LogonActivity"

@@ -43,7 +43,6 @@ public class LoginActivity extends AppCompatActivity{
     private  EditText Phone;
     private  RadioButton MaleButton;
     private  RadioButton FemaleButton;
-
     private final String[] sex = new String[1];
 
     @Override
@@ -73,6 +72,7 @@ public class LoginActivity extends AppCompatActivity{
                 startActivity(intent);
             }
         });
+
 
         LoginLoginLoginButton.setOnClickListener(new View.OnClickListener()
         {

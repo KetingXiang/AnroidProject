@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -39,12 +40,16 @@ public class MenuTabPage extends Fragment {
 
     private View mViewRoot;
     private List<MenuPersonItem> list = new ArrayList<MenuPersonItem>();
+    private List< Map<String ,Integer > >  foundIndex = new ArrayList<Map<String,Integer> >();
+    // 搜索关键字的起始和终止位置
     private static final String baseurl ="http://172.18.57.116:8000/";
     private static final int SHOW_RESPONSE = 0;
     private ListView listView;
     private TextView sort_by_place;
     private TextView sort_by_price;
     private TextView sort_by_evaluate;
+    private EditText edit_found;
+    private ImageView found;
     private String personId;
     private String programId;
 
@@ -76,13 +81,12 @@ public class MenuTabPage extends Fragment {
         sort_by_evaluate.setOnClickListener(sortListener);
         sort_by_price.setOnClickListener(sortListener);
         sort_by_place.setOnClickListener(sortListener);
+        found.setOnClickListener(sortListener);
 
-        Log.i("tag","setAdapter");
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.i("tag","click");
-                programId = list.get(position).getMenu_personName();
+                programId = list.get(position).getMenu_programId();
                 Intent intent = new Intent(getActivity(),DetailActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("id",personId);
@@ -98,7 +102,10 @@ public class MenuTabPage extends Fragment {
         sort_by_place = (TextView)root.findViewById(R.id.menu_sort_by_place);
         sort_by_evaluate = (TextView)root.findViewById(R.id.menu_sort_by_evalute);
         sort_by_price = (TextView)root.findViewById(R.id.menu_sort_by_price);
+        edit_found = (EditText)root.findViewById(R.id.menu_main_edit_found);
+        found = (ImageView)root.findViewById(R.id.menu_main_found);
     }
+
     /**zackzhao
      *
      */
@@ -108,6 +115,7 @@ public class MenuTabPage extends Fragment {
         for (int i = 0;i < myItem.size();i++){
             int menu_personItemId = R.mipmap.ic_launcher;
             int menu_location_icon = R.mipmap.menu_main_item_location2;
+            String menu_programId = myItem.get(i).get("programId");
             String menu_personName = myItem.get(i).get("name");
             String menu_personAddress = myItem.get(i).get("address");
             String menu_evaluate = "评价";
@@ -116,6 +124,7 @@ public class MenuTabPage extends Fragment {
             String menu_go_to_connect = "￥："+myItem.get(i).get("price");
 
             MenuPersonItem person1 = new MenuPersonItem(
+                    menu_programId,
                     menu_personItemId,
                     menu_location_icon,
                     menu_personName,
@@ -126,9 +135,11 @@ public class MenuTabPage extends Fragment {
                     menu_go_to_connect);
             list.add(person1);
         }
-        MenuPersonItemAdapter adapter = new MenuPersonItemAdapter(getActivity(),list);
+
+        MenuPersonItemAdapter adapter = new MenuPersonItemAdapter(getActivity(),list,foundIndex);
         listView.setAdapter(adapter);
     }
+
     private Handler handler = new Handler(){
         public void handleMessage(Message msg){
             switch (msg.what){
@@ -143,14 +154,17 @@ public class MenuTabPage extends Fragment {
             }
         }
     };
+
     private List<Map<String,String> > get_person_item(ArrayList<String> response){
+
         List<Map<String,String> > myItems = new ArrayList<Map<String,String> >();
 
         int program_num = Integer.parseInt(response.get(0));
         for(int i = 0;i < program_num;i++){
             int bisa = i*7;
             Map<String,String> item = new HashMap<String,String>();
-            item.put("name",response.get(1+bisa));
+            item.put("programId",response.get(1+bisa));
+            item.put("name",response.get(2+bisa));
             item.put("address",response.get(3+bisa));
             item.put("evaluate",response.get(4+bisa));
             item.put("description",response.get(6+bisa));
@@ -160,6 +174,7 @@ public class MenuTabPage extends Fragment {
 
         return myItems;
     }
+
     private void sendRequestWithHttpURLConnection(){
         new Thread(new Runnable() {
             @Override
@@ -168,6 +183,7 @@ public class MenuTabPage extends Fragment {
             }
         }).start();
     }
+
     private void findprograms(){
         String url = "";
         url = "http://172.18.57.116:8000/findallprograms/";
@@ -181,7 +197,6 @@ public class MenuTabPage extends Fragment {
             connection.setRequestProperty("Charset","UTF-8");
 //            connection.setDoOutput(true);
 
-            Log.i("tag","connect successfuly "+connection.getResponseCode());
             InputStream in = connection.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             String line;
@@ -189,12 +204,13 @@ public class MenuTabPage extends Fragment {
             while((line = reader.readLine()) != null){
                 response.append(line);
             }
+
             Message message = new Message();
             message.what = SHOW_RESPONSE;
             Log.i("tag",""+(response.toString()));
             message.obj = parseXMLWithPull(response.toString());
-
             handler.sendMessage(message);
+
         }catch (Exception e){
             e.printStackTrace();
         }finally {
@@ -247,7 +263,7 @@ public class MenuTabPage extends Fragment {
     }
 
     /**
-     * 初始化comp 时传入排序关键字和升序asc,默认降序
+     * 初始化comp 时传入排序关键字和升序asc,默认升序
      */
     public class ListMapSortComparator implements Comparator {
 
@@ -296,8 +312,36 @@ public class MenuTabPage extends Fragment {
         }
 
     }
-    class SortListener implements View.OnClickListener{
 
+    /*
+    获取匹配之后的关键字位置
+     */
+    private List<MenuPersonItem> getFoundIndex(){
+        List<MenuPersonItem> found_list = new ArrayList<>();
+        String keyword = edit_found.getText().toString();
+        for (int i = 0; i < list.size();i++){
+            String program_name = list.get(i).getMenu_personName();
+            Log.i("tag",""+program_name);
+            int start = program_name.indexOf(keyword);
+            Log.i("tag",""+start);
+            if (start == -1){
+                ;
+            }else{
+                int end = start+keyword.length();
+                Log.i("tag",""+end);
+                Map<String , Integer> map_item = new HashMap<>();
+                map_item.put("start",new Integer(start));
+                map_item.put("end",new Integer(end));
+                foundIndex.add(map_item);
+                found_list.add(list.get(i));
+            }
+
+        }
+        return found_list;
+    }
+
+    class SortListener implements View.OnClickListener{
+        List<MenuPersonItem> found_list = new ArrayList<>();
         @Override
         public void onClick(View v) {
             switch (v.getId()){
@@ -305,14 +349,20 @@ public class MenuTabPage extends Fragment {
                     break;
                 case R.id.menu_sort_by_price:
                     Collections.sort(list,new MenuTabPage.ListMapSortComparator("price" ,"desc"));
+                    found_list = list;
                     break;
                 case R.id.menu_sort_by_evalute:
                     Collections.sort(list,new MenuTabPage.ListMapSortComparator("evalute" ,"desc"));
                     Collections.sort(list,new MenuTabPage.ListMapSortComparator("evalute" ,"desc"));
+                    found_list = list;
+                    break;
+                case R.id.menu_main_found:
+
+                    found_list = getFoundIndex();
                     break;
             }
 
-            MenuPersonItemAdapter adapter = new MenuPersonItemAdapter(getActivity(),list);
+            MenuPersonItemAdapter adapter = new MenuPersonItemAdapter(getActivity(),found_list,foundIndex);
             listView.setAdapter(adapter);
         }
     }
