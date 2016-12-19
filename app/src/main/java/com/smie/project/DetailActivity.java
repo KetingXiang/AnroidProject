@@ -2,6 +2,7 @@ package com.smie.project;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
@@ -37,6 +38,7 @@ public class DetailActivity extends AppCompatActivity {
     private TextView DetailPrice;
     private TextView DetailLocation;
     private TextView DetailTime;
+    private String DetailPhone;
 
     private static final int SHOW_RESPONSE = 0;
 
@@ -168,6 +170,7 @@ public class DetailActivity extends AppCompatActivity {
                     DetailIntroduction.setText(response.get(4));
                     DetailRateBar.setRating(Float.parseFloat(response.get(2)));
                     DetailPrice.setText(response.get(3));
+                    DetailPhone = response.get(7);
                     break;
             }
         }
@@ -185,9 +188,9 @@ public class DetailActivity extends AppCompatActivity {
         public void onClick(View view){
 
             final AlertDialog.Builder builder = new AlertDialog.Builder(DetailActivity.this);
-
+            DetailPhone = "13609755495";
             builder.setTitle("导游联系方式")
-                    .setMessage("13609755624");
+                    .setMessage(DetailPhone);
             builder.setPositiveButton("拨打电话",new DialogInterface.OnClickListener(){
 //                点击拨打电话之后取消对话框，进入电话拨打界面，之后弹出另一个询问是否参加项目的对话框
 //                字符串提取到string（先不处理）
@@ -200,7 +203,10 @@ public class DetailActivity extends AppCompatActivity {
                         builder_join_program.setPositiveButton("是", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
+                                    Intent phoneintent = new Intent();
+                                    phoneintent.setAction(Intent.ACTION_CALL);
+                                    phoneintent.setData(Uri.parse("tel:"+DetailPhone));
+                                    startActivity(phoneintent);
                             }
                         });
                         builder_join_program.setNegativeButton("否", new DialogInterface.OnClickListener() {
