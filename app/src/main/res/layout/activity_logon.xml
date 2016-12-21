@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:id="@+id/LogonCodeUtilsImage"
-            android:background=""
+
             android:src="@mipmap/ic_launcher">
             <!--"放入验证码图片">-->
         </ImageButton>
