@@ -55,11 +55,15 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:gravity="center">
-        <ImageView
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:id="@+id/LogonCodeUtilsImage" />
+            android:id="@+id/LogonCodeUtilsImage"
+            android:background=""
+            android:src="@mipmap/ic_launcher">
+            <!--"放入验证码图片">-->
+        </ImageButton>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"

@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -37,6 +38,7 @@ public class LogonActivity extends AppCompatActivity {
     private EditText LogonPassword;
     private TextInputLayout CodeUtilsEditLayout;
     private EditText LogonCodeUtilsEdit;
+    private ImageButton LogonCodeUtilsImage;
     private SharedPreferences sharedPref;
     private SharedPreferences.Editor editor;
 
@@ -53,6 +55,7 @@ public class LogonActivity extends AppCompatActivity {
         CodeUtilsEditLayout = (TextInputLayout)findViewById(R.id.LogonCodeUtilsEditLayout);
         LogonCodeUtilsEdit = CodeUtilsEditLayout.getEditText();
         sharedPref = this.getPreferences(MODE_PRIVATE);
+        LogonCodeUtilsImage = (ImageButton) findViewById(R.id.LogonCodeUtilsImage);
 
         if(sharedPref.getBoolean("STATE",false))//如果STATE是true就马上跳转到menu去 记得把用户id传过去
         {
@@ -70,6 +73,12 @@ public class LogonActivity extends AppCompatActivity {
         editor.putBoolean("STATE",false);
         editor.apply();
 
+        LogonCodeUtilsImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //更换新的验证码0 一共有6个0~5
+            }
+        });
 
         Logon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +91,7 @@ public class LogonActivity extends AppCompatActivity {
                     PasswordLayout.setErrorEnabled(false);
                     LogonPassword.setText("");
                     LogonCodeUtilsEdit.setText("");
+                    //更换新的验证码1
 
                 } else if (LogonUsername.getText().toString().length() > 10) {
                     UesrnameLayout.setErrorEnabled(true);
@@ -90,6 +100,7 @@ public class LogonActivity extends AppCompatActivity {
                     PasswordLayout.setErrorEnabled(false);
                     LogonUsername.setText("");
                     LogonCodeUtilsEdit.setText("");
+                    //更换新的验证码2
                 } else {
                     UesrnameLayout.setErrorEnabled(false);
                     if (TextUtils.isEmpty(LogonPassword.getText().toString())) {
@@ -101,6 +112,7 @@ public class LogonActivity extends AppCompatActivity {
                         PasswordLayout.setError("密码应为6~10位");
                         LogonPassword.setText("");
                         LogonCodeUtilsEdit.setText("");
+                        //更换新的验证码3
                     } else
                     {
 //                        Intent intent = new Intent(LogonActivity.this, LaunchActivity.class);//方便试验
@@ -116,6 +128,7 @@ public class LogonActivity extends AppCompatActivity {
                             CodeUtilsEditLayout.setError("验证码输入错误");
                             LogonPassword.setText("");
                             LogonCodeUtilsEdit.setText("");
+                            //更换新的验证码4
                         }
                     }
                 }
@@ -174,6 +187,7 @@ public class LogonActivity extends AppCompatActivity {
                         PasswordLayout.setError("登录密码有误,请检查登录名及密码");
                         LogonPassword.setText("");
                         LogonCodeUtilsEdit.setText("");
+                        //更换新的验证码5
                     }
                     break;
             }
