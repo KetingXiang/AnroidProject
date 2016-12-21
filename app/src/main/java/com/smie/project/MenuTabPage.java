@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -15,6 +17,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
+import com.iflytek.cloud.InitListener;
+import com.iflytek.cloud.RecognizerResult;
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechError;
+import com.iflytek.cloud.SpeechUtility;
+import com.iflytek.cloud.ui.RecognizerDialog;
+import com.iflytek.cloud.ui.RecognizerDialogListener;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -52,7 +63,12 @@ public class MenuTabPage extends Fragment {
     private ImageView found;
     private String personId;
     private String programId;
-
+    /*语音识别   */
+    private final  String APP_ID = "58566081";
+    private RecognizerDialog recognizerDialog = null;
+    private String keyword = "";
+    private ImageView speech;
+    /*           */
     public void setId(Bundle bundle){
         personId = bundle.getString("id");
     }
@@ -63,6 +79,7 @@ public class MenuTabPage extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //初始建立
         mViewRoot = inflater.inflate(R.layout.activity_menu, container, false);
+
         initView(mViewRoot);
         return mViewRoot;
     }
@@ -75,6 +92,7 @@ public class MenuTabPage extends Fragment {
     }
 
     private void initView(View root) {
+        SpeechUtility.createUtility(getActivity(),SpeechConstant.APPID+"=58566081");
         findViews(root);
 
         MenuTabPage.SortListener sortListener = new MenuTabPage.SortListener();
@@ -82,7 +100,12 @@ public class MenuTabPage extends Fragment {
         sort_by_price.setOnClickListener(sortListener);
         sort_by_place.setOnClickListener(sortListener);
         found.setOnClickListener(sortListener);
-
+        speech.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                beginIoc(v);
+            }
+        });
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -104,6 +127,7 @@ public class MenuTabPage extends Fragment {
         sort_by_price = (TextView)root.findViewById(R.id.menu_sort_by_price);
         edit_found = (EditText)root.findViewById(R.id.menu_main_edit_found);
         found = (ImageView)root.findViewById(R.id.menu_main_found);
+        speech = (ImageView)root.findViewById(R.id.menu_main_speech);
     }
 
     /**zackzhao
@@ -161,7 +185,7 @@ public class MenuTabPage extends Fragment {
 
         int program_num = Integer.parseInt(response.get(0));
         for(int i = 0;i < program_num;i++){
-            int bisa = i*7;
+            int bisa = i*9;
             Map<String,String> item = new HashMap<String,String>();
             item.put("programId",response.get(1+bisa));
             item.put("name",response.get(2+bisa));
@@ -318,7 +342,7 @@ public class MenuTabPage extends Fragment {
      */
     private List<MenuPersonItem> getFoundIndex(){
         List<MenuPersonItem> found_list = new ArrayList<>();
-        String keyword = edit_found.getText().toString();
+        keyword = edit_found.getText().toString();
         for (int i = 0; i < list.size();i++){
             String program_name = list.get(i).getMenu_personName();
             Log.i("tag",""+program_name);
@@ -360,10 +384,63 @@ public class MenuTabPage extends Fragment {
 
                     found_list = getFoundIndex();
                     break;
+                default:
+                    break;
             }
 
             MenuPersonItemAdapter adapter = new MenuPersonItemAdapter(getActivity(),found_list,foundIndex);
             listView.setAdapter(adapter);
         }
     }
+
+    /*语音识别
+    zackzhao
+     */
+    public void beginIoc(View view){
+        RecognizerDialog mDialog = new RecognizerDialog(getActivity(), new InitListener() {
+            @Override
+            public void onInit(int i) {
+
+            }
+        });
+        mDialog.setParameter(SpeechConstant.LANGUAGE,"zh_cn");
+        mDialog.setParameter(SpeechConstant.ACCENT,"mandarin");
+
+        mDialog.setListener(new RecognizerDialogListener() {
+            List<String> chineseWordList = new ArrayList<String>();
+            String Str = "";
+            String str2 = "分词结果";
+            @Override
+            public void onResult(RecognizerResult recognizerResult, boolean b) {
+                String jsonObg= recognizerResult.getResultString();
+                Gson gson = new Gson();
+                MenuSentence sentence=  gson.fromJson(jsonObg,new MenuSentence().getClass());
+                List<MenuWs> wsList = sentence.getWs();
+                for (MenuWs w:wsList){
+                    List<MenuCw> cwList = w.getCw();
+                    for (MenuCw c:cwList){
+                        String chineseWord=  c.getW();
+                        chineseWordList.add(chineseWord);
+                        Log.i("tagchineseWord",chineseWord);
+                        if (!chineseWord.equals("。")){
+                            Str+=chineseWord;
+                            str2+=chineseWord+",";
+                        }
+
+
+
+                    }
+                }
+                Log.i("taggggg",Str);
+                edit_found.setText(Str);
+            }
+
+            @Override
+            public void onError(SpeechError speechError) {
+
+            }
+        });
+        mDialog.show();
+    }
+
 }
