@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import org.w3c.dom.Text;
 
 import java.util.List;
@@ -90,10 +92,17 @@ public class MenuPersonItemAdapter extends BaseAdapter{
             viewHolder.menu_personName.setText(list.get(position).getMenu_personName());
         }
 
-
+        /*
         viewHolder.menu_personItemId.setImageResource(list.get(position).getMenu_personItemId());
         viewHolder.menu_location_icon.setImageResource(list.get(position).getMenu_location_icon());
+        */
 
+        /* 通过使用picasso模块读取图片，优化adapter的图片读取*/
+        /*曾钧麟*/
+        Picasso.with(context).load(list.get(position).getMenu_location_icon())
+                .into(viewHolder.menu_location_icon);
+        Picasso.with(context).load(list.get(position).getMenu_personItemId())
+                .into(viewHolder.menu_personItemId);
 
 
 

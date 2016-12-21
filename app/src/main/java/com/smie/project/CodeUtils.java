@@ -10,7 +10,7 @@ import java.util.Random;
 /**
  * Created by LeviLee on 16-12-20.
  */
-public class YanZhengMa {
+public class CodeUtils {
     private static final char[] CHARS = {
             '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
             'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
@@ -19,7 +19,7 @@ public class YanZhengMa {
             'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
     };
 
-    private static YanZhengMa mCodeUtils;
+    private static CodeUtils mCodeUtils;
     private int mPaddingLeft, mPaddingTop;
     private StringBuilder mBuilder = new StringBuilder();
     private Random mRandom = new Random();
@@ -36,9 +36,9 @@ public class YanZhengMa {
     private static final int DEFAULT_HEIGHT = 100;//默认高度.图片的总高
     private static final int DEFAULT_COLOR = 0xDF;//默认背景颜色值
 
-    public static YanZhengMa getInstance() {
+    public static CodeUtils getInstance() {
         if(mCodeUtils == null) {
-            mCodeUtils = new YanZhengMa();
+            mCodeUtils = new CodeUtils();
         }
         return mCodeUtils;
     }
