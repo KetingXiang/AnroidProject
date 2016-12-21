@@ -23,6 +23,7 @@ public class CodeUtils {
     private int mPaddingLeft, mPaddingTop;
     private StringBuilder mBuilder = new StringBuilder();
     private Random mRandom = new Random();
+    private String code;
 
     //Default Settings
     private static final int DEFAULT_CODE_LENGTH = 4;//验证码的长度  这里是4位
@@ -52,7 +53,7 @@ public class CodeUtils {
         Canvas canvas = new Canvas(bitmap);
 
         //生成的验证码
-        String code = createCode();
+        code = createCode();
 
         canvas.drawColor(Color.rgb(DEFAULT_COLOR, DEFAULT_COLOR, DEFAULT_COLOR));
         Paint paint = new Paint();
@@ -72,6 +73,10 @@ public class CodeUtils {
         canvas.save(Canvas.ALL_SAVE_FLAG);//保存
         canvas.restore();
         return bitmap;
+    }
+
+    public String getCode(){
+        return code;
     }
 
     //生成验证码
