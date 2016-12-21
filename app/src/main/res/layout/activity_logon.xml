@@ -101,5 +101,4 @@
             android:layout_toRightOf="@id/LogonButton"
             android:layout_marginLeft="10dp"/>
     </RelativeLayout>
-
 </RelativeLayout>
