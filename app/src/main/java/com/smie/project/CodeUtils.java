@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 
 import java.util.Random;
 
@@ -72,6 +74,7 @@ public class CodeUtils {
 
         canvas.save(Canvas.ALL_SAVE_FLAG);//保存
         canvas.restore();
+        Drawable drawable = new BitmapDrawable(bitmap);
         return bitmap;
     }
 

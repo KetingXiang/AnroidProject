@@ -35,6 +35,8 @@ public class LogonActivity extends AppCompatActivity {
     private EditText LogonUsername;
     private TextInputLayout PasswordLayout;
     private EditText LogonPassword;
+    private TextInputLayout CodeUtilsEditLayout;
+    private EditText LogonCodeUtilsEdit;
     private SharedPreferences sharedPref;
     private SharedPreferences.Editor editor;
 
@@ -48,6 +50,8 @@ public class LogonActivity extends AppCompatActivity {
         LogonUsername = UesrnameLayout.getEditText();
         PasswordLayout = (TextInputLayout) findViewById(R.id.PasswordLayout);
         LogonPassword = PasswordLayout.getEditText();
+        CodeUtilsEditLayout = (TextInputLayout)findViewById(R.id.LogonCodeUtilsEditLayout);
+        LogonCodeUtilsEdit = CodeUtilsEditLayout.getEditText();
         sharedPref = this.getPreferences(MODE_PRIVATE);
 
         if(sharedPref.getBoolean("STATE",false))//如果STATE是true就马上跳转到menu去 记得把用户id传过去
@@ -76,25 +80,43 @@ public class LogonActivity extends AppCompatActivity {
                     UesrnameLayout.setErrorEnabled(true);
                     UesrnameLayout.setError("登录名不能为空");
                     PasswordLayout.setErrorEnabled(false);
+                    LogonPassword.setText("");
+                    LogonCodeUtilsEdit.setText("");
 
                 } else if (LogonUsername.getText().toString().length() > 10) {
                     UesrnameLayout.setErrorEnabled(true);
                     UesrnameLayout.setError("登录名不合法");
+                    LogonPassword.setText("");
                     PasswordLayout.setErrorEnabled(false);
+                    LogonUsername.setText("");
+                    LogonCodeUtilsEdit.setText("");
                 } else {
                     UesrnameLayout.setErrorEnabled(false);
                     if (TextUtils.isEmpty(LogonPassword.getText().toString())) {
                         PasswordLayout.setErrorEnabled(true);
                         PasswordLayout.setError("密码不能为空");
+                        LogonCodeUtilsEdit.setText("");
                     } else if (LogonPassword.getText().toString().length() > 10 || LogonPassword.getText().toString().length() < 6) {
                         PasswordLayout.setErrorEnabled(true);
                         PasswordLayout.setError("密码应为6~10位");
-                    } else {
-
+                        LogonPassword.setText("");
+                        LogonCodeUtilsEdit.setText("");
+                    } else
+                    {
 //                        Intent intent = new Intent(LogonActivity.this, LaunchActivity.class);//方便试验
 //                        startActivity(intent);
                         PasswordLayout.setErrorEnabled(false);
-                        sendRequestWithHttpURLConnection("http://172.18.57.116:8000/findusers/"+LogonUsername.getText().toString());
+                        if (true)//判断验证码是否一致)
+                        {
+                            sendRequestWithHttpURLConnection("http://172.18.57.116:8000/findusers/"+LogonUsername.getText().toString());
+                        }
+                        else
+                        {
+                            CodeUtilsEditLayout.setErrorEnabled(true);
+                            CodeUtilsEditLayout.setError("验证码输入错误");
+                            LogonPassword.setText("");
+                            LogonCodeUtilsEdit.setText("");
+                        }
                     }
                 }
             }
@@ -150,6 +172,8 @@ public class LogonActivity extends AppCompatActivity {
                         //denglushibai liliwei
                         PasswordLayout.setErrorEnabled(true);
                         PasswordLayout.setError("登录密码有误,请检查登录名及密码");
+                        LogonPassword.setText("");
+                        LogonCodeUtilsEdit.setText("");
                     }
                     break;
             }
