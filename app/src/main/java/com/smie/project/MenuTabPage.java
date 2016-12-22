@@ -73,7 +73,7 @@ public class MenuTabPage extends Fragment {
         personId = bundle.getString("id");
     }
 
-
+//    pri
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
