@@ -403,8 +403,12 @@ public class MenuTabPage extends Fragment {
 
             }
         });
+        /*
+        设置语言和方言
+        */
         mDialog.setParameter(SpeechConstant.LANGUAGE,"zh_cn");
         mDialog.setParameter(SpeechConstant.ACCENT,"mandarin");
+
 
         mDialog.setListener(new RecognizerDialogListener() {
             List<String> chineseWordList = new ArrayList<String>();
@@ -431,7 +435,6 @@ public class MenuTabPage extends Fragment {
 
                     }
                 }
-                Log.i("taggggg",Str);
                 edit_found.setText(Str);
             }
 
