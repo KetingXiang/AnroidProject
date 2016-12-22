@@ -15,6 +15,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
@@ -41,6 +43,7 @@ public class LogonActivity extends AppCompatActivity {
     private ImageButton LogonCodeUtilsImage;
     private SharedPreferences sharedPref;
     private SharedPreferences.Editor editor;
+    private CodeUtils mCodeUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,9 @@ public class LogonActivity extends AppCompatActivity {
         LogonCodeUtilsEdit = CodeUtilsEditLayout.getEditText();
         sharedPref = this.getPreferences(MODE_PRIVATE);
         LogonCodeUtilsImage = (ImageButton) findViewById(R.id.LogonCodeUtilsImage);
+        mCodeUtils = new CodeUtils();
+
+        LogonCodeUtilsImage.setImageBitmap(mCodeUtils.createBitmap());
 
         if(sharedPref.getBoolean("STATE",false))//如果STATE是true就马上跳转到menu去 记得把用户id传过去
         {
@@ -77,6 +83,7 @@ public class LogonActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //更换新的验证码0 一共有6个0~5
+                LogonCodeUtilsImage.setImageBitmap(mCodeUtils.createBitmap());
             }
         });
 
@@ -91,8 +98,7 @@ public class LogonActivity extends AppCompatActivity {
                     PasswordLayout.setErrorEnabled(false);
                     LogonPassword.setText("");
                     LogonCodeUtilsEdit.setText("");
-                    //更换新的验证码1
-
+                    LogonCodeUtilsImage.setImageBitmap(mCodeUtils.createBitmap());
                 } else if (LogonUsername.getText().toString().length() > 10) {
                     UesrnameLayout.setErrorEnabled(true);
                     UesrnameLayout.setError("登录名不合法");
@@ -100,7 +106,7 @@ public class LogonActivity extends AppCompatActivity {
                     PasswordLayout.setErrorEnabled(false);
                     LogonUsername.setText("");
                     LogonCodeUtilsEdit.setText("");
-                    //更换新的验证码2
+                    LogonCodeUtilsImage.setImageBitmap(mCodeUtils.createBitmap());
                 } else {
                     UesrnameLayout.setErrorEnabled(false);
                     if (TextUtils.isEmpty(LogonPassword.getText().toString())) {
@@ -112,14 +118,15 @@ public class LogonActivity extends AppCompatActivity {
                         PasswordLayout.setError("密码应为6~10位");
                         LogonPassword.setText("");
                         LogonCodeUtilsEdit.setText("");
-                        //更换新的验证码3
+                        LogonCodeUtilsImage.setImageBitmap(mCodeUtils.createBitmap());
                     } else
                     {
 //                        Intent intent = new Intent(LogonActivity.this, LaunchActivity.class);//方便试验
 //                        startActivity(intent);
                         PasswordLayout.setErrorEnabled(false);
-                        if (true)//判断验证码是否一致)
+                        if (LogonCodeUtilsEdit.getText().toString().toLowerCase().equals(mCodeUtils.getCode().toLowerCase()))
                         {
+                            Log.e("tag","code is right");
                             sendRequestWithHttpURLConnection("http://172.18.57.116:8000/findusers/"+LogonUsername.getText().toString());
                         }
                         else
@@ -128,7 +135,7 @@ public class LogonActivity extends AppCompatActivity {
                             CodeUtilsEditLayout.setError("验证码输入错误");
                             LogonPassword.setText("");
                             LogonCodeUtilsEdit.setText("");
-                            //更换新的验证码4
+                            LogonCodeUtilsImage.setImageBitmap(mCodeUtils.createBitmap());
                         }
                     }
                 }
@@ -165,8 +172,7 @@ public class LogonActivity extends AppCompatActivity {
                     if(response.get(0).equals(LogonPassword.getText().toString()))//de dao mima
                     {
                         //dengluchenggong liliwei
-                        Toast.makeText(LogonActivity.this,"ID: "+LogonUsername.getText().toString()+"\nPW: "
-                                +LogonPassword.getText().toString()+"\nRP: "+response.get(0),Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(LogonActivity.this,"ID: "+LogonUsername.getText().toString()+"\nPW: "+LogonPassword.getText().toString()+"\nRP: "+response.get(0),Toast.LENGTH_SHORT).show();
                         //曾钧麟
                         //更改状态 不用再进入登录页面了
                         editor.putString("id",LogonUsername.getText().toString());
@@ -187,7 +193,7 @@ public class LogonActivity extends AppCompatActivity {
                         PasswordLayout.setError("登录密码有误,请检查登录名及密码");
                         LogonPassword.setText("");
                         LogonCodeUtilsEdit.setText("");
-                        //更换新的验证码5
+                        LogonCodeUtilsImage.setImageBitmap(mCodeUtils.createBitmap());
                     }
                     break;
             }

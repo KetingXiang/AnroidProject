@@ -21,7 +21,6 @@ public class CodeUtils {
             'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
     };
 
-    private static CodeUtils mCodeUtils;
     private int mPaddingLeft, mPaddingTop;
     private StringBuilder mBuilder = new StringBuilder();
     private Random mRandom = new Random();
@@ -38,13 +37,6 @@ public class CodeUtils {
     private static final int DEFAULT_WIDTH = 200;//默认宽度.图片的总宽
     private static final int DEFAULT_HEIGHT = 100;//默认高度.图片的总高
     private static final int DEFAULT_COLOR = 0xDF;//默认背景颜色值
-
-    public static CodeUtils getInstance() {
-        if(mCodeUtils == null) {
-            mCodeUtils = new CodeUtils();
-        }
-        return mCodeUtils;
-    }
 
     //生成验证码图片
     public Bitmap createBitmap() {

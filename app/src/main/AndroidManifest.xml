@@ -27,7 +27,8 @@
         android:theme="@style/AppTheme.NoActionBar">
         <activity android:name=".DetailActivity"/>
         <activity android:name=".CommentActivity"/>
-        <activity android:name=".LoginActivity"/>
+        <activity android:name=".LoginActivity"
+            android:noHistory="true"/>
         <activity
             android:name=".StartAnimationActivity"
             android:noHistory="true">
@@ -43,7 +44,8 @@
         <activity android:name=".PersonActivity"/>
         <activity android:name=".LaunchActivity"/>
         <activity android:name=".MainActivity"/>
-        <activity android:name=".LogonActivity">
+        <activity android:name=".LogonActivity"
+            android:noHistory="true">
         </activity>
     </application>
 

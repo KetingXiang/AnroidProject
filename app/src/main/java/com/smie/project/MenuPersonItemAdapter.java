@@ -104,8 +104,6 @@ public class MenuPersonItemAdapter extends BaseAdapter{
         Picasso.with(context).load(list.get(position).getMenu_personItemId())
                 .into(viewHolder.menu_personItemId);
 
-
-
         viewHolder.menu_personAddress.setText(list.get(position).getMenu_personAddress());
 //        viewHolder.menu_evaluate.setText(list.get(position).getMenu_evaluate());
         viewHolder.menu_evaluta_bar.setRating(list.get(position).getMenu_evaluta_bar());
