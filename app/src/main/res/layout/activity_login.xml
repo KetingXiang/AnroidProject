@@ -3,14 +3,29 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#39D1Df">
+    android:background="@color/gray">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/LoginTitle"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="30dp"
+            android:text="注册一个新账户"
+            android:textColor="@color/black"
+            android:textSize="40sp"/>
+    </RelativeLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="30dp"
+        android:layout_below="@id/LoginTitle"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:id="@+id/NewUsernameLayout">
@@ -32,7 +47,7 @@
         android:id="@+id/NewPasswordLayout"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="10dp">
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,7 +65,7 @@
         android:id="@+id/ConfirmPasswordLayout"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="10dp">
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -68,7 +83,7 @@
         android:id="@+id/PhoneLayout"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="10dp">
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -85,7 +100,7 @@
         android:id="@+id/LoginSexGroup"
         android:layout_below="@id/PhoneLayout"
         android:gravity="center"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal">
         <RadioButton
             android:id="@+id/MaleButton"
@@ -114,17 +129,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="返回"
-            android:textSize="20dp"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:background="@color/appColor"
             android:id="@+id/Loginreturn"
             android:layout_alignParentStart="true"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="注册"
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:background="@color/appColor"
             android:layout_alignTop="@id/Loginreturn"
             android:layout_toRightOf="@id/Loginreturn"
             android:layout_marginLeft="10dp"
-            android:id="@+id/LoginLoginButton"
-            android:textSize="20dp"/>
+            android:id="@+id/LoginLoginButton"/>
     </RelativeLayout>
 </RelativeLayout>
