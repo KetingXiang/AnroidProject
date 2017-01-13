@@ -162,7 +162,7 @@ public class LoginActivity extends AppCompatActivity{
                                 //xinjianyonghu liliwei
                                 sendRequestWithHttpURLConnection("http://172.18.56.118:8000/addusers/"+NewUsername.getText().toString()
                                 +"&"+NewPassword.getText().toString()+"&"+Phone.getText().toString()+"&"+sex[0]
-                                +"&http://i1.piimg.com/567571/bcad4a3672028efa.jpg&http://i1.piimg.com/567571/4a263c9ec7a5e4be.jpg&给自己改个个性签名吧!");
+                                +"&http://i1.piimg.com/567571/bcad4a3672028efa.jpg&http://i1.piimg.com/567571/4a263c9ec7a5e4be.jpg&no");
                             }
                         }
                     }

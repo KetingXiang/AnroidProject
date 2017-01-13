@@ -1,5 +1,6 @@
 package com.smie.project;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -34,11 +35,16 @@ public class LaunchActivity extends AppCompatActivity {
     private  EditText LaunchPlace ;
     private  EditText LaunchTime ;
     private  EditText LaunchBrifing ;
+    private String personId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
+
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        personId = bundle.getString("id");
 
         Confirm = (Button) findViewById(R.id.LaunchConfirmButton);
         LaunchName = (EditText) findViewById(R.id.LaunchName);
@@ -85,7 +91,7 @@ public class LaunchActivity extends AppCompatActivity {
 //                                    Toast.makeText(LaunchActivity.this, (LaunchBrifing.getText().toString()), Toast.LENGTH_SHORT).show();
                     sendRequestWithHttpURLConnection("http://172.18.57.116:8000/addprograms/"+LaunchName.getText().toString()
                             +"&"+LaunchPlace.getText().toString()+"&0.5&"+LaunchPrice.getText().toString()+"&"
-                            +LaunchBrifing.getText().toString()+"&"+LaunchTime.getText().toString());
+                            +LaunchBrifing.getText().toString()+"&"+LaunchTime.getText().toString()+"&"+personId+"&15626275067");
                 }
             }
         });
