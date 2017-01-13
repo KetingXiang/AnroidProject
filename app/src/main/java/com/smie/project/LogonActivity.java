@@ -120,7 +120,7 @@ public class LogonActivity extends AppCompatActivity {
                         PasswordLayout.setErrorEnabled(false);
                         if (true)//判断验证码是否一致)
                         {
-                            sendRequestWithHttpURLConnection("http://172.18.57.116:8000/findusers/"+LogonUsername.getText().toString());
+                            sendRequestWithHttpURLConnection("http://172.18.56.118:8000/findusers/"+LogonUsername.getText().toString());
                         }
                         else
                         {

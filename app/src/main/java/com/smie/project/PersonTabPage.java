@@ -231,16 +231,25 @@ public class PersonTabPage extends Fragment {
     public static final String ACCESS_KEY = "ni-F4OxH1p5EXAgjBVCi-ECYe4asZYyK3gMtaA8-"; // 你的access_key
     public static final String SECRET_KEY = "c4GBBZLAXGy0pur7VjLyWZdhFSYG26lRvT1ze8vo"; // 你的secret_key
     public static final String BUCKET_NAME = "androidproject"; // 你的secret_key
-    //public static final String BUCKET_NAME = "oi8ci4qay.bkt.clouddn.com"; // 你的secret_key
+    public static final String HOST_NAME = "oi8ci4qay.bkt.clouddn.com"; // 你的secret_key
 
 
     public void saveToCloud(int code) {
         //Auth mAuth = Auth.create(ACCESS_KEY, SECRET_KEY);
         String token = "ni-F4OxH1p5EXAgjBVCi-ECYe4asZYyK3gMtaA8-:iSIDEU1EmYBfo84rWwx42IMilGA=:eyJzY29wZSI6ImFuZHJvaWRwcm9qZWN0IiwiZGVhZGxpbmUiOjE0ODIzNDA3OTIwMDAwMDB9";
 
-
         //SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         String name = System.currentTimeMillis() + ".png";
+
+        // 更新背景链接
+        if (code == 0) {
+            sendRequestWithHttpURLConnection("http://172.18.56.118:8000/updatebackurl/"+personId+"&"+HOST_NAME+"/"+name);
+        }
+        // 更新头像链接
+        else if (code == 1) {
+            sendRequestWithHttpURLConnection("http://172.18.56.118:8000/updateheadurl/"+personId+"&"+HOST_NAME+"/"+name);
+        }
+
         UploadManager uploadManager = new UploadManager();
         uploadManager.put(fileName, name, token, new UpCompletionHandler() {
             @Override
@@ -250,6 +259,36 @@ public class PersonTabPage extends Fragment {
         }, null);
         System.out.println("保存成功");
 
+    }
+    private void sendRequestWithHttpURLConnection(final String url){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                updateUrl(url);
+            }
+        }).start();
+    }
+    private void updateUrl(String url){
+        Log.i("tag",url);
+        HttpURLConnection connection = null;
+        try{
+            connection = (HttpURLConnection)((new URL(url.toString())).openConnection());
+            connection.setRequestMethod("GET");
+            connection.setReadTimeout(8000);
+            connection.setConnectTimeout(8000);
+            connection.setRequestProperty("Charset","UTF-8");
+//            connection.setDoOutput(true);
+
+
+            Log.i("tag","connect successfuly "+connection.getResponseCode());
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            if (connection != null){
+                connection.disconnect();
+            }
+        }
     }
 
     /**/
