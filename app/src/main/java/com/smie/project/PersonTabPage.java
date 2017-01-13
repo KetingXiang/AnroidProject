@@ -27,12 +27,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.qiniu.android.http.ResponseInfo;
+import com.qiniu.android.storage.UpCompletionHandler;
+import com.qiniu.android.storage.UploadManager;
+
+import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -154,6 +162,96 @@ public class PersonTabPage extends Fragment {
         }
     };
 
+    private String fileName;
+    // 保存拍摄的照片到手机的sd卡
+    private void SavePicInLocal(Bitmap bitmap) {
+        FileOutputStream fos = null;
+        BufferedOutputStream bos = null;
+        ByteArrayOutputStream baos = null; // 字节数组输出流
+        try {
+            baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+            byte[] byteArray = baos.toByteArray();// 字节数组输出流转换成字节数组
+            String saveDir = Environment.getExternalStorageDirectory()
+                    + "/伴游";
+            File dir = new File(saveDir);
+            if (!dir.exists()) {
+                dir.mkdir(); // 创建文件夹
+            }
+            fileName = saveDir + "/" + System.currentTimeMillis() + ".PNG";
+            File file = new File(fileName);
+            file.delete();
+            if (!file.exists()) {
+                file.createNewFile();// 创建文件
+                Log.e("PicDir", file.getPath());
+                Toast.makeText(getActivity(), fileName, Toast.LENGTH_LONG)
+                        .show();
+            }
+            // 将字节数组写入到刚创建的图片文件中
+            fos = new FileOutputStream(file);
+            bos = new BufferedOutputStream(fos);
+            bos.write(byteArray);
+
+            Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            Uri uri = Uri.fromFile(file);
+            intent.setData(uri);
+            getActivity().sendBroadcast(intent);
+            //PersonTabPage.this.sendBroadcast(intent);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        } finally {
+            if (baos != null) {
+                try {
+                    baos.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (bos != null) {
+                try {
+                    bos.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+
+    }
+
+    public static final String ACCESS_KEY = "ni-F4OxH1p5EXAgjBVCi-ECYe4asZYyK3gMtaA8-"; // 你的access_key
+    public static final String SECRET_KEY = "c4GBBZLAXGy0pur7VjLyWZdhFSYG26lRvT1ze8vo"; // 你的secret_key
+    public static final String BUCKET_NAME = "androidproject"; // 你的secret_key
+    //public static final String BUCKET_NAME = "oi8ci4qay.bkt.clouddn.com"; // 你的secret_key
+
+
+    public void saveToCloud(int code) {
+        //Auth mAuth = Auth.create(ACCESS_KEY, SECRET_KEY);
+        String token = "ni-F4OxH1p5EXAgjBVCi-ECYe4asZYyK3gMtaA8-:iSIDEU1EmYBfo84rWwx42IMilGA=:eyJzY29wZSI6ImFuZHJvaWRwcm9qZWN0IiwiZGVhZGxpbmUiOjE0ODIzNDA3OTIwMDAwMDB9";
+
+
+        //SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        String name = System.currentTimeMillis() + ".png";
+        UploadManager uploadManager = new UploadManager();
+        uploadManager.put(fileName, name, token, new UpCompletionHandler() {
+            @Override
+            public void complete(String name, ResponseInfo responseInfo, JSONObject response) {
+
+            }
+        }, null);
+        System.out.println("保存成功");
+
+    }
+
     /**/
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -165,13 +263,19 @@ public class PersonTabPage extends Fragment {
         if (resultCode == getActivity().RESULT_OK) {
             switch (requestCode) {
                 case BACKGROUND_PHOTO_WITH_CAMERA:
-                    Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory()+"/image.jpg");
+                    String path = Environment.getExternalStorageDirectory()+"/image.jpg";
+                    System.out.println("拍照后：" + path);
+                    Bitmap bitmap = BitmapFactory.decodeFile(path);
                     //Bitmap newBitmap = zoomBitmap(bitmap, bitmap.getWidth() / SCA)
                     Bitmap newBitmap = Bitmap.createScaledBitmap(bitmap, dwidth, dheight / 2, true);
+                    //Bitmap newBitmap = dealPic(path, 0);
                     Message message1 = new Message();
                     message1.what = BACKGROUND_PHOTO_WITH_CAMERA;
                     message1.obj = newBitmap;
                     mHandler2.sendMessage(message1);
+                    SavePicInLocal(newBitmap);
+                    //savetest();
+                    saveToCloud(0);
                     break;
                 case BACKGROUND_CHOOSE_PICTURE:
                     ContentResolver resolver = getActivity().getContentResolver();
@@ -184,6 +288,8 @@ public class PersonTabPage extends Fragment {
                             message2.what = BACKGROUND_CHOOSE_PICTURE;
                             message2.obj = newBitmap2;
                             mHandler2.sendMessage(message2);
+                            SavePicInLocal(newBitmap2);
+                            saveToCloud(0);
                         }
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
@@ -199,6 +305,8 @@ public class PersonTabPage extends Fragment {
                     message3.what = HEAD_PHOTO_WITH_CAMERA;
                     message3.obj = newBitmap2;
                     mHandler2.sendMessage(message3);
+                    SavePicInLocal(newBitmap2);
+                    saveToCloud(1);
                     break;
                 case HEAD_CHOOSE_PICTURE:
                     ContentResolver resolver2 = getActivity().getContentResolver();
@@ -211,6 +319,8 @@ public class PersonTabPage extends Fragment {
                             message4.what = HEAD_CHOOSE_PICTURE;
                             message4.obj = newBitmap3;
                             mHandler2.sendMessage(message4);
+                            SavePicInLocal(newBitmap3);
+                            saveToCloud(1);
                         }
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
