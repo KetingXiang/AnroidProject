@@ -11,8 +11,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -38,9 +41,17 @@ public class DetailActivity extends AppCompatActivity {
     private TextView DetailPrice;
     private TextView DetailLocation;
     private TextView DetailTime;
+    private ImageView DetailCollected;
     private String DetailPhone;
 
-    private static final int SHOW_RESPONSE = 0;
+    private static final int SHOW_RESPONSE_INFO = 0;
+    private static final int SHOW_RESPONSE_COLLECTED_INFO = 1;
+    private static final int SHOW_RESPONSE_COLLECTED_UPDATE = 2;
+    private static final int SHOW_RESPONSE_COLLECTED_DELETE = 3;
+    private static final int BEGIN = 0 ;
+    private static final int UPDATE = 1 ;
+    private static final int DELETE = 2 ;
+    private boolean collected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +69,21 @@ public class DetailActivity extends AppCompatActivity {
         DetailPrice = (TextView)findViewById(R.id.DetailPrice);
         DetailLocation = (TextView)findViewById(R.id.DetailLocation);
         DetailTime = (TextView)findViewById(R.id.DetailTime);
+        DetailCollected = (ImageView)findViewById(R.id.DetailCollected);
 
-        sendRequestWithHttpURLConnection();
+        sendRequestWithHttpURLConnection(BEGIN);
 
+        DetailCollected.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!collected){
+                    sendRequestWithHttpURLConnection(UPDATE);
+                }
+                else{
+                    sendRequestWithHttpURLConnection(DELETE);
+                }
+            }
+        });
         /*
         listen DetailJoinProgram
         */
@@ -72,11 +95,21 @@ public class DetailActivity extends AppCompatActivity {
     曾钧麟
     链接网络获取详细信息
     */
-    private void sendRequestWithHttpURLConnection(){
+    private void sendRequestWithHttpURLConnection(final int code){
         new Thread(new Runnable() {
             @Override
             public void run() {
-                findprograms();
+                if (code == BEGIN){
+                    findprograms();
+                    findcollected();
+                }
+                else if (code == UPDATE){
+                    updatecollected();
+                }
+                else if (code == DELETE){
+                    deletecollected();
+                }
+
             }
         }).start();
     }
@@ -101,7 +134,108 @@ public class DetailActivity extends AppCompatActivity {
                 response.append(line);
             }
             Message message = new Message();
-            message.what = SHOW_RESPONSE;
+            message.what = SHOW_RESPONSE_INFO;
+            Log.i("tag",""+(response.toString()));
+            message.obj = parseXMLWithPull(response.toString());
+
+            handler.sendMessage(message);
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            if (connection != null){
+                connection.disconnect();
+            }
+        }
+    }
+    private void updatecollected(){
+        String url = "";
+        url = getString(R.string.host_ip)+"addcollected/"+personId+'&'+programId+'/';
+        Log.i("tag",url);
+        HttpURLConnection connection = null;
+        try{
+            connection = (HttpURLConnection)((new URL(url.toString())).openConnection());
+            connection.setRequestMethod("GET");
+            connection.setReadTimeout(8000);
+            connection.setConnectTimeout(8000);
+            connection.setRequestProperty("Charset","UTF-8");
+
+            Log.i("tag","connect successfuly "+connection.getResponseCode());
+            InputStream in = connection.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            String line;
+            StringBuilder response = new StringBuilder();
+            while((line = reader.readLine()) != null){
+                response.append(line);
+            }
+            Message message = new Message();
+            message.what = SHOW_RESPONSE_COLLECTED_INFO;
+            Log.i("tag",""+(response.toString()));
+            message.obj = parseXMLWithPull(response.toString());
+            handler.sendMessage(message);
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            if (connection != null){
+                connection.disconnect();
+            }
+        }
+    }
+    private void findcollected() {
+        String url = "";
+        url = getString(R.string.host_ip) + "findcollected/" + personId + "&" + programId + "/";
+        Log.i("tag", url);
+        HttpURLConnection connection = null;
+        try {
+            connection = (HttpURLConnection) ((new URL(url.toString())).openConnection());
+            connection.setRequestMethod("GET");
+            connection.setReadTimeout(8000);
+            connection.setConnectTimeout(8000);
+            connection.setRequestProperty("Charset", "UTF-8");
+
+            Log.i("tag", "connect successfuly " + connection.getResponseCode());
+            InputStream in = connection.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            String line;
+            StringBuilder response = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+            Message message = new Message();
+            message.what = SHOW_RESPONSE_COLLECTED_UPDATE;
+            Log.i("tag", "" + (response.toString()));
+            message.obj = parseXMLWithPull(response.toString());
+
+            handler.sendMessage(message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
+        }
+    }
+    private void deletecollected(){
+        String url = "";
+        url = getString(R.string.host_ip)+"deletecollected/"+personId+"&"+programId+"/";
+        Log.i("tag",url);
+        HttpURLConnection connection = null;
+        try{
+            connection = (HttpURLConnection)((new URL(url.toString())).openConnection());
+            connection.setRequestMethod("GET");
+            connection.setReadTimeout(8000);
+            connection.setConnectTimeout(8000);
+            connection.setRequestProperty("Charset","UTF-8");
+
+            Log.i("tag","connect successfuly "+connection.getResponseCode());
+            InputStream in = connection.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            String line;
+            StringBuilder response = new StringBuilder();
+            while((line = reader.readLine()) != null){
+                response.append(line);
+            }
+            Message message = new Message();
+            message.what = SHOW_RESPONSE_COLLECTED_DELETE;
             Log.i("tag",""+(response.toString()));
             message.obj = parseXMLWithPull(response.toString());
 
@@ -162,15 +296,43 @@ public class DetailActivity extends AppCompatActivity {
     */
     private Handler handler = new Handler(){
         public void handleMessage(Message msg){
+            ArrayList<String> response;
             switch (msg.what){
-                case SHOW_RESPONSE:
-                    ArrayList<String> response = (ArrayList<String>) msg.obj;
+                case SHOW_RESPONSE_INFO:
                     //对界面上的内容赋值
+                    response = (ArrayList<String>)msg.obj;
                     DetailName.setText(response.get(0));
                     DetailIntroduction.setText(response.get(4));
                     DetailRateBar.setRating(Float.parseFloat(response.get(2)));
                     DetailPrice.setText(response.get(3));
                     DetailPhone = response.get(7);
+                    break;
+                case SHOW_RESPONSE_COLLECTED_INFO:
+                    //对界面上的内容赋值
+                    response = (ArrayList<String>)msg.obj;
+                    if(response.get(0).equals("success")){
+                        Picasso.with(DetailActivity.this).load(R.mipmap.detail_ic_favorite_on).into(DetailCollected);
+                        collected = true;
+                    }else{
+                        Picasso.with(DetailActivity.this).load(R.mipmap.detail_ic_collected_off).into(DetailCollected);
+                        collected = false;
+                    }
+                    break;
+                case SHOW_RESPONSE_COLLECTED_UPDATE:
+                    //对界面上的内容赋值
+                    response = (ArrayList<String>)msg.obj;
+                    if(response.get(0).equals("success")){
+                        Picasso.with(DetailActivity.this).load(R.mipmap.detail_ic_favorite_on).into(DetailCollected);
+                        collected = true;
+                    }
+                    break;
+                case SHOW_RESPONSE_COLLECTED_DELETE:
+                    //对界面上的内容赋值
+                    response = (ArrayList<String>)msg.obj;
+                    if(response.get(0).equals("success")){
+                        Picasso.with(DetailActivity.this).load(R.mipmap.detail_ic_collected_off).into(DetailCollected);
+                        collected = false;
+                    }
                     break;
             }
         }

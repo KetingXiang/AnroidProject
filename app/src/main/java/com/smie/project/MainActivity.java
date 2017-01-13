@@ -97,12 +97,12 @@ public class MainActivity extends FragmentActivity {
                     case 0:
                         activity_main_textview_menu.setTextColor(Color.parseColor("#39D1DF"));
                         Picasso.with(MainActivity.this).load(R.mipmap.main_ic_menu_button_on).into(activity_main_image_menu);
-                        Picasso.with(MainActivity.this).load(R.mipmap.main_ic_person_button_off).into(activity_main_image_menu);
+                        Picasso.with(MainActivity.this).load(R.mipmap.main_ic_person_button_off).into(activity_main_image_person);
                         break;
                     case 1:
                         activity_main_textview_person.setTextColor(Color.parseColor("#39D1DF"));
                         Picasso.with(MainActivity.this).load(R.mipmap.main_ic_menu_button_off).into(activity_main_image_menu);
-                        Picasso.with(MainActivity.this).load(R.mipmap.main_ic_person_button_on).into(activity_main_image_menu);
+                        Picasso.with(MainActivity.this).load(R.mipmap.main_ic_person_button_on).into(activity_main_image_person);
                         break;
                 }
                 currentPageIndex = position;
@@ -137,6 +137,12 @@ public class MainActivity extends FragmentActivity {
                     viewPager.setCurrentItem(0,true);
                     break;
                 case R.id.activity_main_textview_person:
+                    viewPager.setCurrentItem(1,true);
+                    break;
+                case R.id.activity_main_image_menu:
+                    viewPager.setCurrentItem(0,true);
+                    break;
+                case R.id.activity_main_image_person:
                     viewPager.setCurrentItem(1,true);
                     break;
                 case R.id.activity_main_image_add_programs:

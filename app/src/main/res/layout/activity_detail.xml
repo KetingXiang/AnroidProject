@@ -91,7 +91,8 @@
                             android:numStars="5"
                             android:rating="1.5"
                             android:isIndicator="true"
-                            android:padding="5dp"/>
+                            android:paddingBottom="5dp"
+                            android:paddingLeft="5dp"/>
                         <TextView
                             android:id="@+id/DetailTextView1"
                             android:layout_width="wrap_content"
@@ -196,16 +197,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true">
-        <ImageView
-            android:id="@+id/Shop_details_off"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/detail_ic_favorite_off"
-            android:layout_alignParentTop="true"
-            android:paddingLeft="7dp"
-            />
+        android:layout_alignParentBottom="true">
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -213,13 +206,24 @@
             android:id="@+id/DetailJoinProgram"
             android:background="@color/appColor"
             android:layout_alignParentEnd="true"/>
-        <TextView
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_alignParentTop="true">
+            <ImageView
+                android:id="@+id/DetailCollected"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@mipmap/detail_ic_collected_off"
+                />
+            <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="收藏"
-            android:layout_below="@id/Shop_details_off"
-            android:paddingLeft="7dp"
             android:textColor="@color/black"/>
+        </LinearLayout>
 
     </RelativeLayout>
 
