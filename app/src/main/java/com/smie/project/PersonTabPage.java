@@ -412,7 +412,7 @@ public class PersonTabPage extends Fragment {
 
     /***********************************从数据库中更新UI*************************************/
     public void setPersonInformation() {
-        String requestUrl = "http://172.18.57.116:8000/findusers/" + personId;
+        String requestUrl = "http://172.18.56.118:8000/findusers/" + personId;
         getAllInformation(requestUrl);
     }
 
@@ -501,7 +501,13 @@ public class PersonTabPage extends Fragment {
                     }
 
                     // 设置个性签名
-                    personWords.setText(list.get(5));
+                    if (list.get(5).isEmpty()) {
+                        personWords.setText("编辑个性签名");
+                    }
+                    else {
+                        personWords.setText(list.get(5));
+                    }
+
 
                     ArrayList<Bitmap> bitmapArrayList = bundle.getParcelableArrayList("bitmap");
                     // 设置头像
