@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -113,6 +114,7 @@ public class DetailActivity extends AppCompatActivity {
             }
         }).start();
     }
+
     private void findprograms(){
         String url = "";
         url = getString(R.string.host_ip)+"findprograms/"+programId;
@@ -249,6 +251,51 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     *
+     */
+    private void sendDataOfMyParticipateActivity(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                addMyParticipateActivity();
+            }
+        }).start();
+    }
+    private void addMyParticipateActivity(){
+        String url = "";
+        url = getString(R.string.host_ip)+"addparticipated/"+personId+"&"+programId;
+        Log.i("tag",url);
+        HttpURLConnection connection = null;
+        try{
+            connection = (HttpURLConnection)((new URL(url.toString())).openConnection());
+            connection.setRequestMethod("GET");
+            connection.setReadTimeout(8000);
+            connection.setConnectTimeout(8000);
+            connection.setRequestProperty("Charset","UTF-8");
+
+            Log.i("tag","connect successfuly "+connection.getResponseCode());
+            InputStream in = connection.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            String line;
+            StringBuilder response = new StringBuilder();
+            while((line = reader.readLine()) != null){
+                response.append(line);
+            }
+            Message message = new Message();
+            message.what = SHOW_RESPONSE;
+            Log.i("tag",""+(response.toString()));
+            message.obj = parseXMLWithPull(response.toString());
+
+            handlerMyParticipate.sendMessage(message);
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            if (connection != null){
+                connection.disconnect();
+            }
+        }
+    }
     /*
     曾钧麟
     2016 12 14
@@ -337,6 +384,21 @@ public class DetailActivity extends AppCompatActivity {
             }
         }
     };
+    /*
+    handle 发送我参与的信息
+     */
+    private Handler handlerMyParticipate = new Handler(){
+        public void handleMessage(Message msg){
+            switch (msg.what){
+                case SHOW_RESPONSE:
+                    ArrayList<String> response = (ArrayList<String>) msg.obj;
+                    //判断上传数据状态
+                    String mystate = response.get(0);
+
+                    break;
+            }
+        }
+    };
 
     /**
     2016 / 12 / 1
@@ -359,16 +421,27 @@ public class DetailActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int which){
                         dialog.dismiss();
+
+                        /*
+                        拨打电话
+                         */
+                        Intent phoneintent = new Intent();
+                        phoneintent.setAction(Intent.ACTION_CALL);
+                        phoneintent.setData(Uri.parse("tel:"+DetailPhone));
+                        startActivity(phoneintent);
+
+                        /*
+                        上传我参与的数据
+                        参数：person ID
+                              programID
+                         */
                         final AlertDialog.Builder builder_join_program = new AlertDialog.Builder(DetailActivity.this);
                         builder_join_program.setTitle("温馨提示")
                                 .setMessage("你愿意继续参与这个项目吗？");
                         builder_join_program.setPositiveButton("是", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                    Intent phoneintent = new Intent();
-                                    phoneintent.setAction(Intent.ACTION_CALL);
-                                    phoneintent.setData(Uri.parse("tel:"+DetailPhone));
-                                    startActivity(phoneintent);
+                                addMyParticipateActivity();
                             }
                         });
                         builder_join_program.setNegativeButton("否", new DialogInterface.OnClickListener() {

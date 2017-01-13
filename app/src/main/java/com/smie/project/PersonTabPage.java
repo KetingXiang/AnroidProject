@@ -524,7 +524,11 @@ public class PersonTabPage extends Fragment {
         personParticipateAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(getActivity(), MyParticipatedActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("id",personId);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });

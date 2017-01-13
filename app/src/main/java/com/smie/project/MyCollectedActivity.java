@@ -23,6 +23,7 @@ public class MyCollectedActivity extends AppCompatActivity {
     private RatingBar   myCollectedStar;            // 星级
     private ListView    myCollectedList;
 
+
     private List<Map<String, Object>> myCollectedData;
     private SimpleAdapter             myCollectedSimpleAdapter;
 
@@ -30,6 +31,8 @@ public class MyCollectedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_collected);
+
+
         bind();
         listen();
     }
