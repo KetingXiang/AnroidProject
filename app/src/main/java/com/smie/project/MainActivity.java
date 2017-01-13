@@ -14,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,6 +28,8 @@ public class MainActivity extends FragmentActivity {
     private TextView activity_main_textview_menu;
     private TextView activity_main_textview_person;
     private ImageView activity_main_image_add_programs ;
+    private ImageView activity_main_image_menu ;
+    private ImageView activity_main_image_person ;
     private RelativeLayout menuLayout;
     private LinearLayout personLayout;
     private int currentPageIndex;
@@ -48,6 +52,8 @@ public class MainActivity extends FragmentActivity {
         activity_main_textview_menu = (TextView) findViewById(R.id.activity_main_textview_menu);
         activity_main_textview_person = (TextView) findViewById(R.id.activity_main_textview_person);
         activity_main_image_add_programs = (ImageView)findViewById(R.id.activity_main_image_add_programs);
+        activity_main_image_person = (ImageView)findViewById(R.id.activity_main_image_person);
+        activity_main_image_menu = (ImageView)findViewById(R.id.activity_main_image_menu);
         menuLayout = (RelativeLayout) findViewById(R.id.menu_main_activity);
         personLayout = (LinearLayout) findViewById(R.id.activity_person);
 
@@ -89,10 +95,14 @@ public class MainActivity extends FragmentActivity {
                 resetTextView();
                 switch (position) {
                     case 0:
-                        activity_main_textview_menu.setTextColor(Color.parseColor("#008000"));
+                        activity_main_textview_menu.setTextColor(Color.parseColor("#39D1DF"));
+                        Picasso.with(MainActivity.this).load(R.mipmap.main_ic_menu_button_on).into(activity_main_image_menu);
+                        Picasso.with(MainActivity.this).load(R.mipmap.main_ic_person_button_off).into(activity_main_image_menu);
                         break;
                     case 1:
-                        activity_main_textview_person.setTextColor(Color.parseColor("#008000"));
+                        activity_main_textview_person.setTextColor(Color.parseColor("#39D1DF"));
+                        Picasso.with(MainActivity.this).load(R.mipmap.main_ic_menu_button_off).into(activity_main_image_menu);
+                        Picasso.with(MainActivity.this).load(R.mipmap.main_ic_person_button_on).into(activity_main_image_menu);
                         break;
                 }
                 currentPageIndex = position;

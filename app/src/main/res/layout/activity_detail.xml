@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:background="#39D1DF"
+        android:background="@color/white"
         android:gravity="center_vertical" >
 
         <ImageView
@@ -17,17 +17,8 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:paddingLeft="10dp"
-            android:src="@drawable/detail_ic_back" />
+            android:src="@drawable/detail_ic_back"/>
 
-        <ImageView
-            android:id="@+id/Shop_details_off"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:paddingLeft="5dp"
-            android:paddingRight="10dp"
-            android:src="@drawable/detail_ic_favorite_off" />
     </RelativeLayout>
 
     <ScrollView
@@ -46,7 +37,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="0dp"
                 android:orientation="vertical"
-                android:padding="0dp" >
+                android:padding="0dp"
+                android:background="@color/white">
 
                 <TextView
                     android:id="@+id/DetailName"
@@ -57,15 +49,16 @@
                     android:paddingTop="13dp"
                     android:maxLines="1"
                     android:text="大学城一日游"
-                    android:textColor="#000000"
+                    android:textColor="@color/black"
                     android:textSize="22sp"
-                    android:background="#39D1Df"/>
+                    android:background="@color/gray"
+                    android:textStyle="bold"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="7dp" >
+                    android:padding="7dp">
 
                     <ImageView
                         android:id="@+id/DetailPhotos"
@@ -97,16 +90,18 @@
                             style="@style/Widget.AppCompat.RatingBar.Small"
                             android:numStars="5"
                             android:rating="1.5"
-                            android:isIndicator="true"/>
+                            android:isIndicator="true"
+                            android:padding="5dp"/>
                         <TextView
                             android:id="@+id/DetailTextView1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:text="人均价格: ¥ "
+                            android:text="人均价格:  ¥  "
                             android:textColor="#666666"
                             android:textSize="15sp"
-                            android:layout_below="@id/DetailRateBar"/>
+                            android:layout_below="@id/DetailRateBar"
+                            android:padding="5dp"/>
                         <TextView
                             android:id="@+id/DetailPrice"
                             android:layout_width="wrap_content"
@@ -115,7 +110,8 @@
                             android:layout_toEndOf="@id/DetailTextView1"
                             android:text="350"
                             android:textColor="#666666"
-                            android:textSize="15sp" />
+                            android:textSize="15sp"
+                            android:padding="5dp"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -124,7 +120,8 @@
                             android:textColor="#666666"
                             android:textSize="15sp"
                             android:layout_centerVertical="true"
-                            android:layout_below="@id/DetailTextView1"/>
+                            android:layout_below="@id/DetailTextView1"
+                            android:padding="5dp"/>
                         <TextView
                             android:id="@+id/DetailLocation"
                             android:layout_width="wrap_content"
@@ -133,7 +130,8 @@
                             android:layout_toEndOf="@id/DetailTextView3"
                             android:text="大学城"
                             android:textColor="#666666"
-                            android:textSize="15sp" />
+                            android:textSize="15sp"
+                            android:padding="5dp"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -142,7 +140,8 @@
                             android:textColor="#666666"
                             android:textSize="15sp"
                             android:layout_centerVertical="true"
-                            android:layout_below="@id/DetailTextView3"/>
+                            android:layout_below="@id/DetailTextView3"
+                            android:padding="5dp"/>
                         <TextView
                             android:id="@+id/DetailTime"
                             android:layout_width="wrap_content"
@@ -151,17 +150,22 @@
                             android:layout_toEndOf="@id/DetailTextView4"
                             android:text="2016/12/15"
                             android:textColor="#666666"
-                            android:textSize="15sp" />
+                            android:textSize="15sp"
+                            android:padding="5dp"/>
                     </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>
             <!-- 、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、 -->
-
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/gray"/>
             <RelativeLayout
                 android:id="@+id/shop_details_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="7dp">
+                android:padding="7dp"
+                android:background="#FFFFFF">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -184,24 +188,39 @@
                     android:layout_below="@id/DetailTextView2"
                     android:text="暂无详细信息"
                     android:id="@+id/DetailIntroduction" />
-
-
-
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#FFFFFF"
         android:layout_alignParentBottom="true"
-        android:gravity="right"
-        android:background="@color/appColor">
+        android:layout_alignParentStart="true">
+        <ImageView
+            android:id="@+id/Shop_details_off"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/detail_ic_favorite_off"
+            android:layout_alignParentTop="true"
+            android:paddingLeft="7dp"
+            />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="立即参加"
-            android:id="@+id/DetailJoinProgram"/>
-    </LinearLayout>
+            android:id="@+id/DetailJoinProgram"
+            android:background="@color/appColor"
+            android:layout_alignParentEnd="true"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="收藏"
+            android:layout_below="@id/Shop_details_off"
+            android:paddingLeft="7dp"
+            android:textColor="@color/black"/>
+
+    </RelativeLayout>
 
 </RelativeLayout>
