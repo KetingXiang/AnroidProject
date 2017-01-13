@@ -6,4 +6,5 @@
     <string name="menu_main_sort_more">更多</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_logon">LogonActivity</string>
+    <string name="host_ip">http://172.18.56.118:8000/</string>
 </resources>

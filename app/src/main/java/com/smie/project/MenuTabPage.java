@@ -53,7 +53,6 @@ public class MenuTabPage extends Fragment {
     private List<MenuPersonItem> list = new ArrayList<MenuPersonItem>();
     private List< Map<String ,Integer > >  foundIndex = new ArrayList<Map<String,Integer> >();
     // 搜索关键字的起始和终止位置
-    private static final String baseurl ="http://172.18.57.116:8000/";
     private static final int SHOW_RESPONSE = 0;
     private ListView listView;
     private TextView sort_by_place;
@@ -209,7 +208,7 @@ public class MenuTabPage extends Fragment {
 
     private void findprograms(){
         String url = "";
-        url = "http://172.18.57.116:8000/findallprograms/";
+        url = getString(R.string.host_ip)+"findallprograms/";
         Log.i("tag",url);
         HttpURLConnection connection = null;
         try{

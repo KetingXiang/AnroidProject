@@ -243,11 +243,11 @@ public class PersonTabPage extends Fragment {
 
         // 更新背景链接
         if (code == 0) {
-            sendRequestWithHttpURLConnection("http://172.18.56.118:8000/updatebackurl/"+personId+"&"+HOST_NAME+"/"+name);
+            sendRequestWithHttpURLConnection(getString(R.string.host_ip)+"updatebackurl/"+personId+"&"+HOST_NAME+"/"+name);
         }
         // 更新头像链接
         else if (code == 1) {
-            sendRequestWithHttpURLConnection("http://172.18.56.118:8000/updateheadurl/"+personId+"&"+HOST_NAME+"/"+name);
+            sendRequestWithHttpURLConnection(getString(R.string.host_ip)+"updateheadurl/"+personId+"&"+HOST_NAME+"/"+name);
         }
 
         UploadManager uploadManager = new UploadManager();
@@ -561,7 +561,7 @@ public class PersonTabPage extends Fragment {
 
     /***********************************从数据库中更新UI*************************************/
     public void setPersonInformation() {
-        String requestUrl = "http://172.18.56.118:8000/findusers/" + personId;
+        String requestUrl = getString(R.string.host_ip)+"findusers/" + personId;
         getAllInformation(requestUrl);
     }
 

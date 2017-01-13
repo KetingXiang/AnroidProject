@@ -127,7 +127,7 @@ public class LogonActivity extends AppCompatActivity {
                         if (LogonCodeUtilsEdit.getText().toString().toLowerCase().equals(mCodeUtils.getCode().toLowerCase()))
                         {
                             Log.e("tag","code is right");
-                            sendRequestWithHttpURLConnection("http://172.18.57.116:8000/findusers/"+LogonUsername.getText().toString());
+                            sendRequestWithHttpURLConnection(getString(R.string.host_ip)+"findusers/"+LogonUsername.getText().toString());
                         }
                         else
                         {

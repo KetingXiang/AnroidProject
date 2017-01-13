@@ -403,7 +403,7 @@ public class PersonActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         personId = bundle.getString("id");
-        String requestUrl = "http://172.18.57.116:8000/findusers/" + personId;
+        String requestUrl = getString(R.string.host_ip)+"findusers/" + personId;
         getAllInformation(requestUrl);
     }
 

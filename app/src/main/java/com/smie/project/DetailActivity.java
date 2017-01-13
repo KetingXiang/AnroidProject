@@ -82,7 +82,7 @@ public class DetailActivity extends AppCompatActivity {
     }
     private void findprograms(){
         String url = "";
-        url = "http://172.18.57.116:8000/findprograms/"+programId;
+        url = getString(R.string.host_ip)+"findprograms/"+programId;
         Log.i("tag",url);
         HttpURLConnection connection = null;
         try{
