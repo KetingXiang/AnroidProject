@@ -538,6 +538,9 @@ public class PersonTabPage extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MyOrganizedActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("id",personId);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
@@ -547,6 +550,9 @@ public class PersonTabPage extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MyCollectedActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("id",personId);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
@@ -556,8 +562,7 @@ public class PersonTabPage extends Fragment {
             @Override
             public void onClick(View v) {
                 // 跳转到登录界面
-                Intent intent = new Intent(getActivity(), PersonActivity.class);
-                startActivity(intent);
+                ;
             }
         });
     }

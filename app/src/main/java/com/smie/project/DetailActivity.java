@@ -44,7 +44,7 @@ public class DetailActivity extends AppCompatActivity {
     private TextView DetailTime;
     private ImageView DetailCollected;
     private String DetailPhone;
-
+    private static final int SHOW_RESPONSE = 0;
     private static final int SHOW_RESPONSE_INFO = 0;
     private static final int SHOW_RESPONSE_COLLECTED_INFO = 1;
     private static final int SHOW_RESPONSE_COLLECTED_UPDATE = 2;
@@ -283,7 +283,7 @@ public class DetailActivity extends AppCompatActivity {
                 response.append(line);
             }
             Message message = new Message();
-            message.what = SHOW_RESPONSE_INFO;
+            message.what = SHOW_RESPONSE;
             Log.i("tag",""+(response.toString()));
             message.obj = parseXMLWithPull(response.toString());
 
@@ -390,10 +390,11 @@ public class DetailActivity extends AppCompatActivity {
     private Handler handlerMyParticipate = new Handler(){
         public void handleMessage(Message msg){
             switch (msg.what){
-                case SHOW_RESPONSE_INFO:
+                case SHOW_RESPONSE:
                     ArrayList<String> response = (ArrayList<String>) msg.obj;
                     //判断上传数据状态
                     String mystate = response.get(0);
+                    Toast.makeText(DetailActivity.this,"恭喜你参与成功",Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -440,7 +441,7 @@ public class DetailActivity extends AppCompatActivity {
                         builder_join_program.setPositiveButton("是", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                addMyParticipateActivity();
+                                sendDataOfMyParticipateActivity();
                             }
                         });
                         builder_join_program.setNegativeButton("否", new DialogInterface.OnClickListener() {

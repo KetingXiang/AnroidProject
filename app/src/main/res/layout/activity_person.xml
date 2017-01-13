@@ -115,7 +115,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/personOrganize"
-                android:text="发起的"
+                android:text="我发起的"
                 android:textSize="25sp"
                 android:textColor="#000000"
                 android:layout_toRightOf="@+id/personParticipateImage"

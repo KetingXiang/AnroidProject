@@ -135,7 +135,7 @@ public class MenuTabPage extends Fragment {
         Log.i("tag","init");
         list.clear();
         for (int i = 0;i < myItem.size();i++){
-            int menu_personItemId = R.mipmap.ic_launcher;
+            int menu_personItemId = R.mipmap.menu_head_picture;
             int menu_location_icon = R.mipmap.menu_main_item_location2;
             String menu_programId = myItem.get(i).get("programId");
             String menu_personName = myItem.get(i).get("name");
