@@ -7,6 +7,7 @@
     tools:context="com.smie.project.MenuActivity">
 
     <RelativeLayout
+        android:background="@color/appColor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -20,12 +21,7 @@
             android:layout_alignParentLeft="true"
             android:clickable="true"
             android:layout_margin="10dp"/>
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="请输入关键字"
-            android:layout_centerInParent="true"
-            android:id="@+id/menu_main_edit_found"/>
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -33,6 +29,18 @@
             android:layout_alignParentRight="true"
             android:layout_margin="10dp"
             android:id="@+id/menu_main_found"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="请输入关键字"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/gray"
+            android:id="@+id/menu_main_edit_found"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
     </RelativeLayout>
     <Button
         android:layout_width="match_parent"
