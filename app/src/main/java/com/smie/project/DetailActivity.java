@@ -283,7 +283,7 @@ public class DetailActivity extends AppCompatActivity {
                 response.append(line);
             }
             Message message = new Message();
-            message.what = SHOW_RESPONSE;
+            message.what = SHOW_RESPONSE_INFO;
             Log.i("tag",""+(response.toString()));
             message.obj = parseXMLWithPull(response.toString());
 
@@ -390,11 +390,10 @@ public class DetailActivity extends AppCompatActivity {
     private Handler handlerMyParticipate = new Handler(){
         public void handleMessage(Message msg){
             switch (msg.what){
-                case SHOW_RESPONSE:
+                case SHOW_RESPONSE_INFO:
                     ArrayList<String> response = (ArrayList<String>) msg.obj;
                     //判断上传数据状态
                     String mystate = response.get(0);
-
                     break;
             }
         }
